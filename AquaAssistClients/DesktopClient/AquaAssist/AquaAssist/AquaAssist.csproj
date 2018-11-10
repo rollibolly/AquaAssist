@@ -79,6 +79,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Converters\BoolToVisibilityConverter.cs" />
     <Compile Include="Utils\CommandHandler.cs" />
     <Compile Include="ViewModel\MonitorizationViewModel.cs" />
     <Compile Include="ViewModel\SensorViewModel.cs" />

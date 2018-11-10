@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:AquaAssist.View"
+             xmlns:converters="clr-namespace:AquaAssist.Converters"
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
              xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
@@ -13,6 +14,8 @@
              Width="{Binding Width}"
              Height="{Binding Height}">
     <UserControl.Resources>
+
+        <converters:BoolToVisibilityConverter x:Key="bool2Visibility"></converters:BoolToVisibilityConverter>
         <Style TargetType="TextBlock" x:Key="sensorTitleStyle">
             <Style.Setters>
                 <Setter Property="Foreground" Value="{DynamicResource AccentColorBrush}"></Setter>
@@ -85,7 +88,8 @@
             </StackPanel>
             <Grid Grid.Row="0" 
                   Grid.Column="1"
-                  Height="150">
+                  Height="150"
+                  Visibility="{Binding IsMaximized, Converter={StaticResource bool2Visibility}}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition></ColumnDefinition>
                     <ColumnDefinition Width="Auto"></ColumnDefinition>

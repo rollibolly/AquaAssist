@@ -32,8 +32,17 @@ namespace AquaAssist.ViewModel
         private double width = Diomensions.SENSOR_VIEW_WIDTH;
         private double height = Diomensions.SENSOR_VIEW_HEIGHT;
         private ICommand expandCommand;
+        private bool isMaximized = false;
 
-        public bool IsMaximized { get; set; } = false;
+        public bool IsMaximized
+        {
+            get => isMaximized;
+            set
+            {
+                isMaximized = value;
+                OnPropertyChanged(nameof(IsMaximized));
+            }
+        }
 
         public double Width
         {
