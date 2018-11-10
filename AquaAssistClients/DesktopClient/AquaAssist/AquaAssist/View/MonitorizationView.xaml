@@ -5,10 +5,10 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:AquaAssist.View"
              mc:Ignorable="d" 
-             d:DesignHeight="1000" d:DesignWidth="500">
+             d:DesignHeight="1000" d:DesignWidth="1000">
     <Grid>
         <ScrollViewer>
-        <WrapPanel> 
+        <WrapPanel HorizontalAlignment="Center"> 
                 <local:SensorView DataContext="{Binding TemperatureSensor}"></local:SensorView>
                 <local:SensorView DataContext="{Binding OutsideTemperatureSensor}"></local:SensorView>
                 <local:SensorView DataContext="{Binding FlowRateSensor}"></local:SensorView>

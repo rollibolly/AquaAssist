@@ -42,10 +42,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Constants\Diomensions.cs" />
     <Compile Include="Constants\Mappings.cs" />
     <Compile Include="Enum\ChartDisplayMode.cs" />
     <Compile Include="Enum\CurrentValueStatus.cs" />
     <Compile Include="Enum\SensorType.cs" />
+    <Compile Include="Helpers\CurrentValueStatusExtension.cs" />
     <Compile Include="Helpers\SensorValueLimitExtension.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

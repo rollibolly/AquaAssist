@@ -28,7 +28,14 @@ namespace AquaAssist.ViewModel
             {
                 Sensor = new SensorModel()
                 {
-                    SensorName = "Temperature",
+                    SensorName = "Temperature",                    
+                },
+                Limits = new SensorValueLimitsModel
+                {
+                    CriticalHigh = 29,
+                    OptimalHigh = 27,
+                    OptimalLow = 24,
+                    CriticalLow = 22
                 },
                 Unit = "C",
                 Description = "Temperature of the aquarium."
@@ -48,6 +55,13 @@ namespace AquaAssist.ViewModel
             FlowRateSensor = new SensorViewModel
             {
                 Sensor = new SensorModel { SensorName = "Flow Rate" },
+                Limits = new SensorValueLimitsModel
+                {
+                    CriticalHigh = 620,
+                    OptimalHigh = 610,
+                    OptimalLow = 605,
+                    CriticalLow = 600
+                },
                 Unit = "L/h",
                 Description = "Flow rate of the canister filter."
             };
