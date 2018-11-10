@@ -7,7 +7,7 @@
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
              mc:Ignorable="d" 
-             d:DesignHeight="700" d:DesignWidth="700">
+             MinHeight="400" MinWidth="500">
     <UserControl.Resources>
         <Style TargetType="TextBlock" x:Key="sensorTitleStyle">
             <Style.Setters>
@@ -24,7 +24,7 @@
             </Style.Setters>
         </Style>
     </UserControl.Resources>
-    <Grid>
+    <Grid Margin="15 15 0 0">
         <Grid.Effect>
             <DropShadowEffect BlurRadius="15" Direction="-90" RenderingBias="Quality" Opacity=".2" ShadowDepth="1"/>
         </Grid.Effect>
@@ -47,7 +47,7 @@
             <RowDefinition Height="100"></RowDefinition>
         </Grid.RowDefinitions>
         <Border x:Name="Border1" Grid.Row="0" Grid.RowSpan="4" CornerRadius="5" Background="White" />
-        <Border Grid.Row="0" Grid.RowSpan="3" Background="{DynamicResource AccentColorBrush}" ></Border>
+        <Border Grid.Row="0" Grid.RowSpan="3" Background="{Binding BackgroundBrush}" ></Border>
         <TextBlock Grid.Row="0" Text="{Binding Sensor.SensorName}" TextAlignment="Center" Padding="10, 10, 0, 5" Foreground="White" FontSize="18"/>
         <TextBlock Grid.Row="1" TextAlignment="Center" Foreground="#59FFFFFF" Padding="0,0,0,20">2014.12.25</TextBlock>
         <lvc:CartesianChart Grid.Row="2" Margin="0, 0, 0, 0" 
@@ -64,10 +64,10 @@
                 </lvc:Axis>
             </lvc:CartesianChart.AxisX>
         </lvc:CartesianChart>
-        <StackPanel Grid.Row="3" VerticalAlignment="Center" Margin="25, 0" Background="AliceBlue">
+        <StackPanel Grid.Row="3" VerticalAlignment="Center" Margin="25, 0">
             <TextBlock Text="{Binding Description}" Opacity=".4" FontSize="13"></TextBlock>
             <StackPanel Orientation="Horizontal">
-                <TextBlock Foreground="#303030" FontSize="40" Text="{Binding LastLecture, StringFormat={}{0:N1}}" />
+                <TextBlock Foreground="#303030" FontSize="40" Text="{Binding CurrentValue, StringFormat={}{0:N1}}" />
                 <TextBlock Text="{Binding Unit}" Foreground="#303030" FontSize="18" VerticalAlignment="Bottom" Margin="8, 6"/>
             </StackPanel>
         </StackPanel>

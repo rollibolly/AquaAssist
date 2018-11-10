@@ -1,4 +1,7 @@
-﻿using AquaAssist.Models;
+﻿using AquaAssist.CrossCutting.Constants;
+using AquaAssist.CrossCutting.Enum;
+using AquaAssist.CrossCutting.Helpers;
+using AquaAssist.Models;
 using LiveCharts;
 using LiveCharts.Defaults;
 using LiveCharts.Wpf;
@@ -8,18 +11,64 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media;
 
 namespace AquaAssist.ViewModel
 {
     public class SensorViewModel:INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
-        private double lastLecture;
+        private double currentValue;
         private SensorModel sensor;
         private List<string> labels;
         private string unit;
         private string description;
-        private int maxData = 20;
+
+        private int maxData = 15;
+        private SensorValueLimitsModel limits;
+
+        private Dictionary<CurrentValueStatus, SolidColorBrush> colorsMap = new Dictionary<CurrentValueStatus, SolidColorBrush>
+        {
+            { CurrentValueStatus.OVER_CRITICAL, new SolidColorBrush((Color)ColorConverter.ConvertFromString(Mappings.StatusColorMapping[CurrentValueStatus.OVER_CRITICAL])) },
+            { CurrentValueStatus.OVER_WARNING, new SolidColorBrush((Color)ColorConverter.ConvertFromString(Mappings.StatusColorMapping[CurrentValueStatus.OVER_WARNING])) },
+            { CurrentValueStatus.OPTIMAL_HIGH,new SolidColorBrush((Color)ColorConverter.ConvertFromString(Mappings.StatusColorMapping[CurrentValueStatus.OPTIMAL_HIGH]))},
+            { CurrentValueStatus.OPTIMAL, new SolidColorBrush((Color)ColorConverter.ConvertFromString(Mappings.StatusColorMapping[CurrentValueStatus.OPTIMAL]))},
+            { CurrentValueStatus.OPTIMAL_LOW, new SolidColorBrush((Color)ColorConverter.ConvertFromString(Mappings.StatusColorMapping[CurrentValueStatus.OPTIMAL_LOW])) },
+            { CurrentValueStatus.UNDER_WARNING, new SolidColorBrush((Color)ColorConverter.ConvertFromString(Mappings.StatusColorMapping[CurrentValueStatus.UNDER_WARNING])) },
+            { CurrentValueStatus.UNDER_CRITICAL, new SolidColorBrush((Color)ColorConverter.ConvertFromString(Mappings.StatusColorMapping[CurrentValueStatus.UNDER_CRITICAL])) },
+        };
+
+        private Brush backgroundBrush;
+        public Brush BackgroundBrush
+        {
+            get
+            {
+                if (backgroundBrush == null)
+                    backgroundBrush = new SolidColorBrush(Color.FromArgb(200, 0, 244, 0));
+                
+                return backgroundBrush;
+            }
+            set
+            {
+                backgroundBrush = value;
+                OnPropertyChanged(nameof(BackgroundBrush));
+            }
+        }
+
+        public SensorValueLimitsModel Limits
+        {
+            get
+            {
+                if (limits == null)
+                    limits = new SensorValueLimitsModel();
+                return limits;
+            }
+            set
+            {
+                limits = value;
+                OnPropertyChanged(nameof(Limits));
+            }
+        }
 
         public string Description
         {
@@ -78,13 +127,15 @@ namespace AquaAssist.ViewModel
             };            
         }
 
-        public double LastLecture
+        public double CurrentValue
         {
-            get { return lastLecture; }
+            get { return currentValue; }
             set
             {
-                lastLecture = value;
-                OnPropertyChanged(nameof(LastLecture));
+                currentValue = value;
+                OnPropertyChanged(nameof(CurrentValue));
+                                
+                BackgroundBrush = colorsMap[Limits.GetStatusFromValue(currentValue)];                
             }
         }
 
@@ -113,7 +164,7 @@ namespace AquaAssist.ViewModel
             Sensor.Values.Add(val);            
             LastHourSeries[0].Values.Add(new ObservableValue(val.Value));
             Labels.Add(val.Date.ToString("HH:mm:ss"));
-            LastLecture = val.Value;
+            CurrentValue = val.Value;
             OnPropertyChanged(nameof(Sensor));
             //OnPropertyChanged(nameof(Labels));
         }        

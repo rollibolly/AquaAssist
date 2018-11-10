@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="SensorModel.cs" />
+    <Compile Include="SensorValueLimitsModel.cs" />
     <Compile Include="SensorValueModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

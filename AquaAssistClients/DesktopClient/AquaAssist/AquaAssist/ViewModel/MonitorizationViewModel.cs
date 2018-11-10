@@ -12,7 +12,10 @@ namespace AquaAssist.ViewModel
     public class MonitorizationViewModel
     {
         public SensorViewModel TemperatureSensor { get; set; }
+        public SensorViewModel OutsideTemperatureSensor { get; set; }
         public SensorViewModel FlowRateSensor { get; set; }
+        public SensorViewModel LightSensor { get; set; }
+
         public Random rnd = new Random();          
 
         public MonitorizationViewModel()
@@ -30,6 +33,15 @@ namespace AquaAssist.ViewModel
                 Unit = "C",
                 Description = "Temperature of the aquarium."
             };
+            OutsideTemperatureSensor = new SensorViewModel
+            {
+                Sensor = new SensorModel()
+                {
+                    SensorName = "Outside Temperature",
+                },
+                Unit = "C",
+                Description = "Temperature of the room."
+            };
 
             bw.RunWorkerAsync();
 
@@ -39,6 +51,14 @@ namespace AquaAssist.ViewModel
                 Unit = "L/h",
                 Description = "Flow rate of the canister filter."
             };
+
+
+            LightSensor = new SensorViewModel
+            {
+                Sensor = new SensorModel { SensorName = "Light" },
+                Unit = "LUX",
+                Description = "The light sensor."
+            };
         }
 
         private void Bw_DoWork(object sender, DoWorkEventArgs e)
@@ -47,7 +67,7 @@ namespace AquaAssist.ViewModel
             {
                 TemperatureSensor.AddSensorValue(new SensorValueModel { Date = DateTime.Now, Value = rnd.NextDouble() * 10 + 20 });
                 FlowRateSensor.AddSensorValue(new SensorValueModel { Date = DateTime.Now, Value = rnd.NextDouble() * 20 + 600 });
-                Thread.Sleep(1000);
+                Thread.Sleep(5000);
             }
         }
     }

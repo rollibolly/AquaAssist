@@ -8,10 +8,12 @@
              d:DesignHeight="1000" d:DesignWidth="500">
     <Grid>
         <ScrollViewer>
-            <StackPanel Orientation="Vertical"> 
-                <local:SensorView DataContext="{Binding TemperatureSensor}" Height="500"></local:SensorView>
-                <local:SensorView DataContext="{Binding FlowRateSensor}"  Height="500"></local:SensorView>
-            </StackPanel>
+        <WrapPanel> 
+                <local:SensorView DataContext="{Binding TemperatureSensor}"></local:SensorView>
+                <local:SensorView DataContext="{Binding OutsideTemperatureSensor}"></local:SensorView>
+                <local:SensorView DataContext="{Binding FlowRateSensor}"></local:SensorView>
+                <local:SensorView DataContext="{Binding LightSensor}"></local:SensorView>
+        </WrapPanel>
         </ScrollViewer>
     </Grid>
 </UserControl>

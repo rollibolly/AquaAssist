@@ -31,6 +31,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="PresentationCore" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -41,10 +42,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
+    <Compile Include="Constants\Mappings.cs" />
     <Compile Include="Enum\ChartDisplayMode.cs" />
+    <Compile Include="Enum\CurrentValueStatus.cs" />
     <Compile Include="Enum\SensorType.cs" />
+    <Compile Include="Helpers\SensorValueLimitExtension.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\AquaAssist.Models\AquaAssist.Models.csproj">
+      <Project>{eb2e99c3-cb82-45a2-8f60-15be86cd1205}</Project>
+      <Name>AquaAssist.Models</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
