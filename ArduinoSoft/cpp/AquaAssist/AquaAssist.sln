@@ -1,0 +1,45 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26730.15
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "SerialPortCommunication", "SerialPortCommunication\SerialPortCommunication.pyproj", "{F5263461-1F7E-4F0E-9B8C-E14D9B3A922D}"
+EndProject
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "AquaAssistManager.py", "AquaAssistManager.py\AquaAssistManager.py.pyproj", "{4E4C4B54-8476-4B10-BA09-79EA141C24DF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|ARM = Debug|ARM
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|ARM = Release|ARM
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F5263461-1F7E-4F0E-9B8C-E14D9B3A922D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F5263461-1F7E-4F0E-9B8C-E14D9B3A922D}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{F5263461-1F7E-4F0E-9B8C-E14D9B3A922D}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{F5263461-1F7E-4F0E-9B8C-E14D9B3A922D}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{F5263461-1F7E-4F0E-9B8C-E14D9B3A922D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F5263461-1F7E-4F0E-9B8C-E14D9B3A922D}.Release|ARM.ActiveCfg = Release|Any CPU
+		{F5263461-1F7E-4F0E-9B8C-E14D9B3A922D}.Release|x64.ActiveCfg = Release|Any CPU
+		{F5263461-1F7E-4F0E-9B8C-E14D9B3A922D}.Release|x86.ActiveCfg = Release|Any CPU
+		{4E4C4B54-8476-4B10-BA09-79EA141C24DF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4E4C4B54-8476-4B10-BA09-79EA141C24DF}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{4E4C4B54-8476-4B10-BA09-79EA141C24DF}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{4E4C4B54-8476-4B10-BA09-79EA141C24DF}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{4E4C4B54-8476-4B10-BA09-79EA141C24DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4E4C4B54-8476-4B10-BA09-79EA141C24DF}.Release|ARM.ActiveCfg = Release|Any CPU
+		{4E4C4B54-8476-4B10-BA09-79EA141C24DF}.Release|x64.ActiveCfg = Release|Any CPU
+		{4E4C4B54-8476-4B10-BA09-79EA141C24DF}.Release|x86.ActiveCfg = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {87D22736-A30F-4FC8-8610-A6417E4E6076}
+	EndGlobalSection
+EndGlobal

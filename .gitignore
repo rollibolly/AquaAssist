@@ -1,0 +1,12 @@
+*.suo
+*.baml
+*.cache
+*.cmd
+Debug
+Release
+*.dll
+*.db
+*.db-shm
+*.db-wal
+*.nupkg
+*.pdb
