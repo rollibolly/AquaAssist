@@ -13,4 +13,7 @@ Release
 AquaAssistClients/DesktopClient/AquaAssist/.vs/AquaAssist/v15/Server/sqlite3/storage.ide-wal
 AquaAssistClients/DesktopClient/AquaAssist/.vs/AquaAssist/v15/Server/sqlite3/storage.ide-shm
 AquaAssistClients/DesktopClient/AquaAssist/AquaAssist.Mobile/AquaAssist.Mobile/obj/
-RaspberrySoft/AquaAssistAPI/node_modules/
+AquaAssistClients/DesktopClient/AquaAssist/AquaAssist.Mobile/AquaAssist.Mobile.Android/obj/
+AquaAssistClients/DesktopClient/AquaAssist/AquaAssist.Mobile/AquaAssist.Mobile.iOS/obj/
+*.dtbcache
+*.p7s

@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using AquaAssist.Mobile.Pages;
+using AquaAssist.Mobile.ViewModels;
 using Xamarin.Forms;
 
 namespace AquaAssist.Mobile
@@ -12,6 +9,11 @@ namespace AquaAssist.Mobile
         public MainPage()
         {
             InitializeComponent();
+        }
+
+        private void Button_Clicked(object sender, System.EventArgs e)
+        {
+            Navigation.PushAsync(new ChartPage());
         }
     }
 }
