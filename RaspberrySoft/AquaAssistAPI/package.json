@@ -1,0 +1,10 @@
+{
+    "name": "AquaAssistAPI",
+    "version": "1.0.0.0",
+    "description": "The REST API for AquaAssist Client applications",
+    "dependencies": {
+        "fastify": "^1.13.0",
+        "pg": "^7.6.1",
+        "schema-object": "^4.0.11"
+    }
+}
