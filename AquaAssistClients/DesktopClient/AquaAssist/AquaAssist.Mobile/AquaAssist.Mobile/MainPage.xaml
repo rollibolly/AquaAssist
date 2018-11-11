@@ -4,9 +4,6 @@
              x:Class="AquaAssist.Mobile.MainPage">
 
     <StackLayout>
-        <Label Text="Welcome to Aquarium Assist!" 
-           HorizontalOptions="Center"
-           VerticalOptions="CenterAndExpand" />
+        <Button Text="Navigate to charts" Clicked="Button_Clicked"/>
     </StackLayout>
-
 </ContentPage>
