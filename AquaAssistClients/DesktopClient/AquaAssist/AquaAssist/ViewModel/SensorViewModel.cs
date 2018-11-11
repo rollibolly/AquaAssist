@@ -117,20 +117,20 @@ namespace AquaAssist.ViewModel
 
         public string Description
         {
-            get => description;
+            get => Sensor.Description;
             set
             {
-                description = value;
+                Sensor.Description = value;
                 OnPropertyChanged(nameof(Description));
             }
         }
 
         public string Unit
         {
-            get => unit;
+            get => Sensor.Unit;
             set
             {
-                unit = value;
+                Sensor.Unit = value;
                 OnPropertyChanged(nameof(Unit));
             }
         }

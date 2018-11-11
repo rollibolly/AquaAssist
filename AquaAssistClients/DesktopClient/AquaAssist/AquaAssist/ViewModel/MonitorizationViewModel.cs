@@ -28,17 +28,18 @@ namespace AquaAssist.ViewModel
             {
                 Sensor = new SensorModel()
                 {
-                    SensorName = "Temperature",                    
+                    SensorName = "Temperature",
+                    SensorValueLimits = new SensorValueLimitsModel
+                    {
+                        CriticalHigh = 29,
+                        OptimalHigh = 27,
+                        OptimalLow = 24,
+                        CriticalLow = 22
+                    },
+                    Unit = "C",
+                    Description = "Temperature of the aquarium."
                 },
-                Limits = new SensorValueLimitsModel
-                {
-                    CriticalHigh = 29,
-                    OptimalHigh = 27,
-                    OptimalLow = 24,
-                    CriticalLow = 22
-                },
-                Unit = "C",
-                Description = "Temperature of the aquarium."
+                
             };
             OutsideTemperatureSensor = new SensorViewModel
             {
@@ -54,16 +55,19 @@ namespace AquaAssist.ViewModel
 
             FlowRateSensor = new SensorViewModel
             {
-                Sensor = new SensorModel { SensorName = "Flow Rate" },
-                Limits = new SensorValueLimitsModel
+                Sensor = new SensorModel
                 {
-                    CriticalHigh = 620,
-                    OptimalHigh = 610,
-                    OptimalLow = 605,
-                    CriticalLow = 600
-                },
-                Unit = "L/h",
-                Description = "Flow rate of the canister filter."
+                    SensorName = "Flow Rate",
+                    SensorValueLimits = new SensorValueLimitsModel
+                    {
+                        CriticalHigh = 620,
+                        OptimalHigh = 610,
+                        OptimalLow = 605,
+                        CriticalLow = 600
+                    },
+                    Unit = "L/h",
+                    Description = "Flow rate of the canister filter."
+                },                
             };
 
 
