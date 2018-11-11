@@ -10,8 +10,5 @@ Release
 *.db-wal
 *.nupkg
 *.pdb
-*.dtbcache
-AquaAssistClients/DesktopClient/AquaAssist/AquaAssist.Mobile/AquaAssist.Mobile.Android/obj/
-AquaAssistClients/DesktopClient/AquaAssist/AquaAssist.Mobile/AquaAssist.Mobile.iOS/obj/
-AquaAssistClients/DesktopClient/AquaAssist/AquaAssist.Mobile/AquaAssist.Mobile/obj/
-AquaAssistClients/DesktopClient/AquaAssist/packages/
+AquaAssistClients/DesktopClient/AquaAssist/.vs/AquaAssist/v15/Server/sqlite3/storage.ide-wal
+AquaAssistClients/DesktopClient/AquaAssist/.vs/AquaAssist/v15/Server/sqlite3/storage.ide-shm

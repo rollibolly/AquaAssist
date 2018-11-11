@@ -2,6 +2,7 @@
 using AquaAssist.CrossCutting.Enum;
 using AquaAssist.CrossCutting.Helpers;
 using AquaAssist.Models;
+using AquaAssist.Utils;
 using LiveCharts;
 using LiveCharts.Defaults;
 using LiveCharts.Wpf;
@@ -11,10 +12,12 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using System.Windows.Media;
 
 namespace AquaAssist.ViewModel
-{
+{    
+
     public class SensorViewModel:INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
@@ -23,28 +26,70 @@ namespace AquaAssist.ViewModel
         private List<string> labels;
         private string unit;
         private string description;
-
         private int maxData = 15;
         private SensorValueLimitsModel limits;
+        private Brush backgroundBrush;
+        private double width = Diomensions.SENSOR_VIEW_WIDTH;
+        private double height = Diomensions.SENSOR_VIEW_HEIGHT;
+        private ICommand expandCommand;
+        private bool isMaximized = false;
+
+        public bool IsMaximized
+        {
+            get => isMaximized;
+            set
+            {
+                isMaximized = value;
+                OnPropertyChanged(nameof(IsMaximized));
+            }
+        }
+
+        public double Width
+        {
+            get => width;
+            set
+            {
+                width = value;
+                OnPropertyChanged(nameof(Width));
+            }
+        }
+        public double Height
+        {
+            get => height;
+            set
+            {
+                height = value;
+                OnPropertyChanged(nameof(Height));
+            }
+        }
 
         private Dictionary<CurrentValueStatus, SolidColorBrush> colorsMap = new Dictionary<CurrentValueStatus, SolidColorBrush>
         {
-            { CurrentValueStatus.OVER_CRITICAL, new SolidColorBrush((Color)ColorConverter.ConvertFromString(Mappings.StatusColorMapping[CurrentValueStatus.OVER_CRITICAL])) },
-            { CurrentValueStatus.OVER_WARNING, new SolidColorBrush((Color)ColorConverter.ConvertFromString(Mappings.StatusColorMapping[CurrentValueStatus.OVER_WARNING])) },
-            { CurrentValueStatus.OPTIMAL_HIGH,new SolidColorBrush((Color)ColorConverter.ConvertFromString(Mappings.StatusColorMapping[CurrentValueStatus.OPTIMAL_HIGH]))},
-            { CurrentValueStatus.OPTIMAL, new SolidColorBrush((Color)ColorConverter.ConvertFromString(Mappings.StatusColorMapping[CurrentValueStatus.OPTIMAL]))},
-            { CurrentValueStatus.OPTIMAL_LOW, new SolidColorBrush((Color)ColorConverter.ConvertFromString(Mappings.StatusColorMapping[CurrentValueStatus.OPTIMAL_LOW])) },
-            { CurrentValueStatus.UNDER_WARNING, new SolidColorBrush((Color)ColorConverter.ConvertFromString(Mappings.StatusColorMapping[CurrentValueStatus.UNDER_WARNING])) },
-            { CurrentValueStatus.UNDER_CRITICAL, new SolidColorBrush((Color)ColorConverter.ConvertFromString(Mappings.StatusColorMapping[CurrentValueStatus.UNDER_CRITICAL])) },
+            { CurrentValueStatus.OVER_CRITICAL, CurrentValueStatus.OVER_CRITICAL.GetColor() },
+            { CurrentValueStatus.OVER_WARNING, CurrentValueStatus.OVER_WARNING.GetColor() },
+            { CurrentValueStatus.OPTIMAL_HIGH, CurrentValueStatus.OPTIMAL_HIGH.GetColor() },
+            { CurrentValueStatus.OPTIMAL, CurrentValueStatus.OPTIMAL.GetColor() },
+            { CurrentValueStatus.OPTIMAL_LOW,  CurrentValueStatus.OPTIMAL_LOW.GetColor() },
+            { CurrentValueStatus.UNDER_WARNING,  CurrentValueStatus.UNDER_WARNING.GetColor() },
+            { CurrentValueStatus.UNDER_CRITICAL,  CurrentValueStatus.UNDER_CRITICAL.GetColor() },
         };
 
-        private Brush backgroundBrush;
+        
+        public ICommand ExpandCommand
+        {
+            get
+            {
+                return expandCommand ?? (expandCommand = new CommandHandler(() => ResizeView(), true));
+            }            
+        }
+
+
         public Brush BackgroundBrush
         {
             get
             {
                 if (backgroundBrush == null)
-                    backgroundBrush = new SolidColorBrush(Color.FromArgb(200, 0, 244, 0));
+                    backgroundBrush = CurrentValueStatus.OPTIMAL.GetColor();
                 
                 return backgroundBrush;
             }
@@ -117,7 +162,7 @@ namespace AquaAssist.ViewModel
         
 
         public SensorViewModel()
-        {
+        {            
             LastHourSeries = new SeriesCollection
             {
                 new LineSeries
@@ -125,6 +170,24 @@ namespace AquaAssist.ViewModel
                     Values = new ChartValues<ObservableValue>()
                 }
             };            
+        }
+
+        private void ResizeView()
+        {
+            if (IsMaximized)
+            {
+                Width = Diomensions.SENSOR_VIEW_WIDTH;
+                Height = Diomensions.SENSOR_VIEW_HEIGHT;
+                IsMaximized = false;
+            }
+            else
+            {
+                int widthMultiplier = (int)((System.Windows.SystemParameters.PrimaryScreenWidth - 100) / Diomensions.SENSOR_VIEW_WIDTH);
+                int heightMultiplier = (int)((System.Windows.SystemParameters.PrimaryScreenHeight - 200) / Diomensions.SENSOR_VIEW_HEIGHT);
+                Width = widthMultiplier * Diomensions.SENSOR_VIEW_WIDTH;
+                Height = System.Windows.SystemParameters.PrimaryScreenHeight - 200;
+                IsMaximized = true;
+            }
         }
 
         public double CurrentValue
@@ -165,8 +228,7 @@ namespace AquaAssist.ViewModel
             LastHourSeries[0].Values.Add(new ObservableValue(val.Value));
             Labels.Add(val.Date.ToString("HH:mm:ss"));
             CurrentValue = val.Value;
-            OnPropertyChanged(nameof(Sensor));
-            //OnPropertyChanged(nameof(Labels));
+            OnPropertyChanged(nameof(Sensor));            
         }        
 
         protected virtual void OnPropertyChanged(string propertyName = null)
