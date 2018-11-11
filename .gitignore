@@ -17,3 +17,5 @@ AquaAssistClients/DesktopClient/AquaAssist/AquaAssist.Mobile/AquaAssist.Mobile.A
 AquaAssistClients/DesktopClient/AquaAssist/AquaAssist.Mobile/AquaAssist.Mobile.iOS/obj/
 *.dtbcache
 *.p7s
+RaspberrySoft/AquaAssistAPI/node_modules/
+*.ide
