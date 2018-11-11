@@ -10,3 +10,5 @@ Release
 *.db-wal
 *.nupkg
 *.pdb
+AquaAssistClients/DesktopClient/AquaAssist/.vs/AquaAssist/v15/Server/sqlite3/storage.ide-wal
+AquaAssistClients/DesktopClient/AquaAssist/.vs/AquaAssist/v15/Server/sqlite3/storage.ide-shm
