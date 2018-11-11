@@ -1,4 +1,5 @@
-﻿using AquaAssist.Models;
+﻿using AquaAssist.Communication;
+using AquaAssist.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -23,22 +24,12 @@ namespace AquaAssist.ViewModel
             BackgroundWorker bw = new BackgroundWorker();
             bw.DoWork += Bw_DoWork;
 
+            SensorModel tempSensor = RestClient.GetSensorModelById(1);
+            tempSensor.Values = RestClient.GetSensorValuesBySensorId(tempSensor.Id);
 
             TemperatureSensor = new SensorViewModel
             {
-                Sensor = new SensorModel()
-                {
-                    SensorName = "Temperature",
-                    SensorValueLimits = new SensorValueLimitsModel
-                    {
-                        CriticalHigh = 29,
-                        OptimalHigh = 27,
-                        OptimalLow = 24,
-                        CriticalLow = 22
-                    },
-                    Unit = "C",
-                    Description = "Temperature of the aquarium."
-                },
+                Sensor = tempSensor
                 
             };
             OutsideTemperatureSensor = new SensorViewModel

@@ -34,7 +34,7 @@ var readSensorDefinitionById = function(id, callback){
 var readSensorValuesBySensorId = function(id, callback){  
   var text = 'SELECT * FROM sensors.sensor_data WHERE sensor_id = $1';
   var values = [id];
-  pool.query(text, values, (err, res) => {                         
+  pool.query(text, values, (err, res) => {                       
     callback(SensorDefinitionModel.dbResultToSensorValueArray(res));
   });  
 }
