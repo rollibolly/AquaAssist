@@ -25,7 +25,7 @@ namespace AquaAssist.ViewModel
             bw.DoWork += Bw_DoWork;
 
             SensorModel tempSensor = RestClient.GetSensorModelById(1);
-            tempSensor.Values = RestClient.GetSensorValuesBySensorId(tempSensor.Id);
+            tempSensor.Values = RestClient.GetSensorValues(tempSensor.Id, new DateTime(2017, 1, 1, 0, 0, 0), new DateTime(2018, 1, 1, 0, 0, 0), 12);
 
             TemperatureSensor = new SensorViewModel
             {

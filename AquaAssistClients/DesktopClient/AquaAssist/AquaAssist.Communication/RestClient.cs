@@ -57,6 +57,7 @@ namespace AquaAssist.Communication
                 if (arguments != null && arguments.Count() > 0)
                 {
                     query = $"?{string.Join("&", arguments.Select(x => $"{x.Key}={x.Value}"))}";
+                    query = Uri.EscapeUriString(query);
                 }           
                 
                 WebRequest request = WebRequest.Create($"{BaseUrl}{root}{query}");
@@ -96,6 +97,18 @@ namespace AquaAssist.Communication
                 new Dictionary<string, string>
                 {
                     { "id", sensorId.ToString() }
+                });
+        }
+
+        public static List<SensorValueModel> GetSensorValues(int sensorId, DateTime start, DateTime end, int max)
+        {
+            return Get<List<SensorValueModel>>("SensorValues",
+                new Dictionary<string, string>
+                {
+                    { "id", sensorId.ToString() },
+                    { "start", start.ToString("yyyy-MM-dd HH:mm:ss") },
+                    { "end", end.ToString("yyyy-MM-dd HH:mm:ss") },
+                    { "max", max.ToString() },
                 });
         }
     }

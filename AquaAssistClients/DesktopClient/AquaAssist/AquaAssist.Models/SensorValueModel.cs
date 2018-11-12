@@ -28,7 +28,7 @@ namespace AquaAssist.Models
         public string DateStr
         {
             // "2018-11-11 16:20:00.91647+02"
-            get => Date.ToString("YYY-MM-dd HH:mm:ss.FFFFzz");
+            get => Date.ToString("yyyy-MM-dd HH:mm:ss.FFFFzz");
             set => date = DateTime.Parse(value);
         }
 
