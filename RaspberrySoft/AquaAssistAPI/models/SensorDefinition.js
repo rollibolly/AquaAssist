@@ -8,7 +8,7 @@ var SensorValueLimits = new SchemaObject({
 });
 
 var SensorValue = new SchemaObject({
-    Date:String,
+    Date:Object,
     Value:Number
 });
 
@@ -57,7 +57,7 @@ var dbResultToSensorDefinition = function(element){
 var dbResultToSensorValueArray = function(result){
     var resArray = [];
     result.rows.forEach(element => {
-        console.log(element);
+        
         resArray.push(new SensorValue({
             Id: element.id,
             Date: element.ts,

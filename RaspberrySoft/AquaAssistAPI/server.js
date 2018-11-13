@@ -2,10 +2,11 @@ var db = require("./db/data_access.js");
 var response = require("./models/Response.js");
 
 // Require the framework and instantiate it
-const api = require('fastify')()
+const api = require('fastify')();
 
 // Get all Sensor definition
 api.get('/SensorDefinition', async (request, reply) => {      
+    console.log("Hello");
     if (request.query.id != undefined){
         db.readSensorDefinitionById(request.query.id, (res)=>{
             console.log(res);      
@@ -23,11 +24,15 @@ api.get('/SensorDefinition', async (request, reply) => {
                 .send(res);        
         });    
     } 
-})
+});
 
 api.get('/SensorValues', async (request, reply) => {      
-    if (request.query.id != undefined){
-        db.readSensorValuesBySensorId(request.query.id, (res)=>{
+    if (request.query.id != undefined && 
+        request.query.start != undefined &&
+        request.query.end != undefined &&
+        request.query.max != undefined){
+
+        db.readSensorValues(request.query.id, request.query.start, request.query.end, request.query.max, (res)=>{
             console.log(res);      
             reply
             .code(200)
@@ -41,7 +46,7 @@ api.get('/SensorValues', async (request, reply) => {
                 .send("Error");        
         });    
     } 
-})
+});
 
 // Run the server!
 const start = async () => {

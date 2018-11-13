@@ -34,7 +34,16 @@ var readSensorDefinitionById = function(id, callback){
 var readSensorValuesBySensorId = function(id, callback){  
   var text = 'SELECT * FROM sensors.sensor_data WHERE sensor_id = $1';
   var values = [id];
-  pool.query(text, values, (err, res) => {                         
+  pool.query(text, values, (err, res) => {                       
+    callback(SensorDefinitionModel.dbResultToSensorValueArray(res));
+  });  
+}
+
+var readSensorValues = function(sensorId,startDate, endDate, maxEntry, callback){  
+  var text = 'select * from sensors.get_sensor_data($1, $2, $3, $4)';  
+  var values = [sensorId, startDate, endDate, maxEntry]; 
+  console.log(values); 
+  pool.query(text, values, (err, res) => {                       
     callback(SensorDefinitionModel.dbResultToSensorValueArray(res));
   });  
 }
@@ -43,5 +52,6 @@ module.exports = {
   testFunction,
   readSensorDefinitions,
   readSensorDefinitionById,
-  readSensorValuesBySensorId
+  readSensorValuesBySensorId,
+  readSensorValues
 }

@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{EB2E99C3-CB82-45A2-8F60-15BE86CD1205}</ProjectGuid>
+    <ProjectGuid>{BD63CD04-7AE7-4EC8-A165-0AFE6990B58E}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>AquaAssist.Models</RootNamespace>
-    <AssemblyName>AquaAssist.Models</AssemblyName>
+    <RootNamespace>AquaAssist.Communication</RootNamespace>
+    <AssemblyName>AquaAssist.Communication</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -42,10 +42,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="SensorModel.cs" />
-    <Compile Include="SensorValueLimitsModel.cs" />
-    <Compile Include="SensorValueModel.cs" />
+    <Compile Include="RestClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\AquaAssist.Models\AquaAssist.Models.csproj">
+      <Project>{EB2E99C3-CB82-45A2-8F60-15BE86CD1205}</Project>
+      <Name>AquaAssist.Models</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -1,4 +1,5 @@
-﻿using AquaAssist.Models;
+﻿using AquaAssist.Communication;
+using AquaAssist.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -23,22 +24,13 @@ namespace AquaAssist.ViewModel
             BackgroundWorker bw = new BackgroundWorker();
             bw.DoWork += Bw_DoWork;
 
+            SensorModel tempSensor = RestClient.GetSensorModelById(1);
+            tempSensor.Values = RestClient.GetSensorValues(tempSensor.Id, new DateTime(2017, 1, 1, 0, 0, 0), new DateTime(2018, 1, 1, 0, 0, 0), 12);
 
             TemperatureSensor = new SensorViewModel
             {
-                Sensor = new SensorModel()
-                {
-                    SensorName = "Temperature",                    
-                },
-                Limits = new SensorValueLimitsModel
-                {
-                    CriticalHigh = 29,
-                    OptimalHigh = 27,
-                    OptimalLow = 24,
-                    CriticalLow = 22
-                },
-                Unit = "C",
-                Description = "Temperature of the aquarium."
+                Sensor = tempSensor
+                
             };
             OutsideTemperatureSensor = new SensorViewModel
             {
@@ -54,16 +46,19 @@ namespace AquaAssist.ViewModel
 
             FlowRateSensor = new SensorViewModel
             {
-                Sensor = new SensorModel { SensorName = "Flow Rate" },
-                Limits = new SensorValueLimitsModel
+                Sensor = new SensorModel
                 {
-                    CriticalHigh = 620,
-                    OptimalHigh = 610,
-                    OptimalLow = 605,
-                    CriticalLow = 600
-                },
-                Unit = "L/h",
-                Description = "Flow rate of the canister filter."
+                    SensorName = "Flow Rate",
+                    SensorValueLimits = new SensorValueLimitsModel
+                    {
+                        CriticalHigh = 620,
+                        OptimalHigh = 610,
+                        OptimalLow = 605,
+                        CriticalLow = 600
+                    },
+                    Unit = "L/h",
+                    Description = "Flow rate of the canister filter."
+                },                
             };
 
 

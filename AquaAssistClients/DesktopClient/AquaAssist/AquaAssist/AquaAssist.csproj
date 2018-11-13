@@ -147,6 +147,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\AquaAssist.Communication\AquaAssist.Communication.csproj">
+      <Project>{BD63CD04-7AE7-4EC8-A165-0AFE6990B58E}</Project>
+      <Name>AquaAssist.Communication</Name>
+    </ProjectReference>
     <ProjectReference Include="..\AquaAssist.CrossCutting\AquaAssist.CrossCutting.csproj">
       <Project>{fa7e4861-6251-403e-815e-2dea220ec9a3}</Project>
       <Name>AquaAssist.CrossCutting</Name>
