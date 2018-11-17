@@ -43,7 +43,10 @@ var readSensorValues = function(sensorId,startDate, endDate, maxEntry, callback)
   var text = 'select * from sensors.get_sensor_data($1, $2, $3, $4)';  
   var values = [sensorId, startDate, endDate, maxEntry]; 
   console.log(values); 
-  pool.query(text, values, (err, res) => {                       
+  pool.query(text, values, (err, res) => {  
+    if (err) {
+      callback(err);      
+    }                     
     callback(SensorDefinitionModel.dbResultToSensorValueArray(res));
   });  
 }

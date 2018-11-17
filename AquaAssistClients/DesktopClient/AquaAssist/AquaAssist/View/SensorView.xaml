@@ -32,6 +32,7 @@
         </Style>
     </UserControl.Resources>
     <Grid Margin="15 15 0 0" Background="{DynamicResource ControlBackgroundBrush}">
+    <Grid>
         <Grid.Effect>
             <DropShadowEffect BlurRadius="15" Direction="-90" RenderingBias="Quality" Opacity=".2" ShadowDepth="1"/>
         </Grid.Effect>
@@ -80,10 +81,10 @@
                         Grid.Column="0"
                         VerticalAlignment="Center" 
                         Margin="25, 0">
-                <TextBlock Text="{Binding Description}" Opacity=".4" FontSize="13"></TextBlock>
+                <TextBlock Text="{Binding Sensor.Description}" Opacity=".4" FontSize="13"></TextBlock>
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Foreground="#303030" FontSize="40" Text="{Binding CurrentValue, StringFormat={}{0:N1}}" />
-                    <TextBlock Text="{Binding Unit}" Foreground="#303030" FontSize="18" VerticalAlignment="Bottom" Margin="8, 6"/>
+                    <TextBlock Text="{Binding Sensor.Unit}" Foreground="#303030" FontSize="18" VerticalAlignment="Bottom" Margin="8, 6"/>
                 </StackPanel>
             </StackPanel>
             <Grid Grid.Row="0" 
@@ -94,17 +95,46 @@
                     <ColumnDefinition></ColumnDefinition>
                     <ColumnDefinition Width="Auto"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
-                <StackPanel Grid.Column="1"
-                            MinWidth="150">
-                    <DatePicker Margin="0 10 10 5"                                
+                <StackPanel Grid.Column="1"                            
+                            Orientation="Horizontal"
+                            VerticalAlignment="Top">
+                        <Controls:MetroHeader Margin="3">
+                            <Controls:MetroHeader.Header>
+                                <StackPanel Orientation="Horizontal">
+                                    <iconPacks:PackIconMaterial Kind="ClockStart" VerticalAlignment="Center"/>
+                                    <TextBlock Text="Start Date &amp; Time" Margin="3 0 0 0" FontSize="14" VerticalAlignment="Center"></TextBlock>
+                                </StackPanel>
+                            </Controls:MetroHeader.Header>
+                            <Controls:DateTimePicker                                 
+                                        SelectedDate="{Binding StartDate}"
+                                        VerticalAlignment="Center"
+                                        Controls:TextBoxHelper.UseFloatingWatermark="True"
+                                        Controls:TextBoxHelper.Watermark="Select a date.."
+                                        Controls:TextBoxHelper.WatermarkAlignment="Left"></Controls:DateTimePicker>
+                        </Controls:MetroHeader>
+                        <Controls:MetroHeader Margin="3">
+                            <Controls:MetroHeader.Header>
+                                <StackPanel Orientation="Horizontal">
+                                    <iconPacks:PackIconMaterial Kind="ClockEnd" VerticalAlignment="Center"/>
+                                    <TextBlock Text="End Date &amp; Time" Margin="3 0 0 0" FontSize="14" VerticalAlignment="Center"></TextBlock>
+                                </StackPanel>
+                            </Controls:MetroHeader.Header>
+                            <Controls:DateTimePicker 
+                                SelectedDate="{Binding EndDate}"
+                                VerticalAlignment="Center"
                                 Controls:TextBoxHelper.UseFloatingWatermark="True"
-                                Controls:TextBoxHelper.Watermark="Start date"
-                                Controls:TextBoxHelper.WatermarkAlignment="Left"></DatePicker>
-                    <DatePicker Margin="0 0 10 0" 
-                                Controls:TextBoxHelper.UseFloatingWatermark="True"
-                                Controls:TextBoxHelper.Watermark="End date"
-                                Controls:TextBoxHelper.WatermarkAlignment="Left"></DatePicker>
-                </StackPanel>
+                                Controls:TextBoxHelper.Watermark="Select a date.."
+                                Controls:TextBoxHelper.WatermarkAlignment="Left"></Controls:DateTimePicker>
+                        </Controls:MetroHeader>
+                        <Button VerticalAlignment="Center" 
+                                HorizontalAlignment="Center" 
+                                BorderThickness="0" 
+                                Margin="3"
+                                Background="{DynamicResource ControlBackgroundBrush}"
+                                Command="{Binding ReloadCommand}">
+                            <iconPacks:PackIconMaterial Kind="Refresh" />
+                        </Button>
+                    </StackPanel>
             </Grid>
             <Button  Grid.Column="1"
                      Grid.Row="0"
@@ -117,5 +147,12 @@
                 <iconPacks:PackIconFontAwesome Kind="ExpandSolid"/>
             </Button>
         </Grid>
+    </Grid>
+        <!--
+        <Grid Name="gridLoadingScreen" Visibility="{Binding IsLoading, Converter={StaticResource bool2Visibility}}">
+            <Border BorderThickness="0" Background="{DynamicResource ControlBackgroundBrush}" Opacity=".5"/>
+            <Controls:ProgressRing></Controls:ProgressRing>
+        </Grid>
+        -->
     </Grid>
 </UserControl>

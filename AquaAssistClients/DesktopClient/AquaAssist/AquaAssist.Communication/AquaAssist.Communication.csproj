@@ -49,9 +49,9 @@
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\AquaAssist.Models\AquaAssist.Models.csproj">
-      <Project>{EB2E99C3-CB82-45A2-8F60-15BE86CD1205}</Project>
-      <Name>AquaAssist.Models</Name>
+    <ProjectReference Include="..\AquaAssist.CrossCutting\AquaAssist.CrossCutting.csproj">
+      <Project>{FA7E4861-6251-403E-815E-2DEA220EC9A3}</Project>
+      <Name>AquaAssist.CrossCutting</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

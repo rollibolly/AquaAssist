@@ -5,7 +5,8 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AquaAssist.Models
+
+namespace AquaAssist.CrossCutting.Models
 {
     [DataContract]
     public class SensorValueModel
@@ -22,14 +23,17 @@ namespace AquaAssist.Models
                 date = value;
             }
         }
-
-        //[DataMember(Name = "Date")]
-        [IgnoreDataMember]
+        [DataMember(Name ="Date")]
         public string DateStr
         {
-            // "2018-11-11 16:20:00.91647+02"
-            get => Date.ToString("yyyy-MM-dd HH:mm:ss.FFFFzz");
-            set => date = DateTime.Parse(value);
+            get
+            {
+                return Date.ToString("yyyy-MM-dd HH:mm:ss");
+            }
+            set
+            {
+                Date = DateTime.Parse(value);
+            }
         }
 
         [DataMember(Name = "Value")]
