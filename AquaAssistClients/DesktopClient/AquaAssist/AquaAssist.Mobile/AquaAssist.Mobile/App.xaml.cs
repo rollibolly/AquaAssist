@@ -1,4 +1,4 @@
-﻿using System;
+﻿using AquaAssist.Mobile.Pages;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -11,7 +11,7 @@ namespace AquaAssist.Mobile
         {
             InitializeComponent();
 
-            MainPage = new NavigationPage(new MainPage());
+            MainPage = new RootMasterDetailPage();
         }
 
         protected override void OnStart()

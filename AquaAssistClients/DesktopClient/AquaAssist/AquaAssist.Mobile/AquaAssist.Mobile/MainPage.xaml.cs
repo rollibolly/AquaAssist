@@ -1,5 +1,4 @@
 ﻿using AquaAssist.Mobile.Pages;
-using AquaAssist.Mobile.ViewModels;
 using Xamarin.Forms;
 
 namespace AquaAssist.Mobile
