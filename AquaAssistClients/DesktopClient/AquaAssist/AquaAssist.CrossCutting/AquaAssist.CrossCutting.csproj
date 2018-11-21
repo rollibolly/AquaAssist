@@ -35,6 +35,7 @@
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -47,16 +48,14 @@
     <Compile Include="Constants\Mappings.cs" />
     <Compile Include="Enum\ChartDisplayMode.cs" />
     <Compile Include="Enum\CurrentValueStatus.cs" />
-    <Compile Include="Enum\SensorType.cs" />
+    <Compile Include="Enum\SensorTypes.cs" />
     <Compile Include="Helpers\CurrentValueStatusExtension.cs" />
+    <Compile Include="Helpers\DateTimeExtensions.cs" />
     <Compile Include="Helpers\SensorValueLimitExtension.cs" />
+    <Compile Include="Models\SensorModel.cs" />
+    <Compile Include="Models\SensorValueLimitsModel.cs" />
+    <Compile Include="Models\SensorValueModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\AquaAssist.Models\AquaAssist.Models.csproj">
-      <Project>{eb2e99c3-cb82-45a2-8f60-15be86cd1205}</Project>
-      <Name>AquaAssist.Models</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

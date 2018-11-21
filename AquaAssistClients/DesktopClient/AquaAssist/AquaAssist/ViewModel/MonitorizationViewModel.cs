@@ -1,12 +1,4 @@
-﻿using AquaAssist.Communication;
-using AquaAssist.Models;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using AquaAssist.CrossCutting.Enum;
 
 namespace AquaAssist.ViewModel
 {
@@ -16,68 +8,33 @@ namespace AquaAssist.ViewModel
         public SensorViewModel OutsideTemperatureSensor { get; set; }
         public SensorViewModel FlowRateSensor { get; set; }
         public SensorViewModel LightSensor { get; set; }
-
-        public Random rnd = new Random();          
-
+        
         public MonitorizationViewModel()
-        {
-            BackgroundWorker bw = new BackgroundWorker();
-            bw.DoWork += Bw_DoWork;
-
-            SensorModel tempSensor = RestClient.GetSensorModelById(1);
-            tempSensor.Values = RestClient.GetSensorValues(tempSensor.Id, new DateTime(2017, 1, 1, 0, 0, 0), new DateTime(2018, 1, 1, 0, 0, 0), 12);
-
+        {            
             TemperatureSensor = new SensorViewModel
-            {
-                Sensor = tempSensor
+            {                
+                SensorType = SensorTypes.TemperatureAquarium,                
                 
             };
+            TemperatureSensor.Initialize();
+
             OutsideTemperatureSensor = new SensorViewModel
             {
-                Sensor = new SensorModel()
-                {
-                    SensorName = "Outside Temperature",
-                },
-                Unit = "C",
-                Description = "Temperature of the room."
+                SensorType = SensorTypes.TemperatureOutside
             };
-
-            bw.RunWorkerAsync();
+            OutsideTemperatureSensor.Initialize();
 
             FlowRateSensor = new SensorViewModel
             {
-                Sensor = new SensorModel
-                {
-                    SensorName = "Flow Rate",
-                    SensorValueLimits = new SensorValueLimitsModel
-                    {
-                        CriticalHigh = 620,
-                        OptimalHigh = 610,
-                        OptimalLow = 605,
-                        CriticalLow = 600
-                    },
-                    Unit = "L/h",
-                    Description = "Flow rate of the canister filter."
-                },                
+                SensorType = SensorTypes.FlowRate
             };
-
+            FlowRateSensor.Initialize();
 
             LightSensor = new SensorViewModel
             {
-                Sensor = new SensorModel { SensorName = "Light" },
-                Unit = "LUX",
-                Description = "The light sensor."
+                SensorType = SensorTypes.Light
             };
-        }
-
-        private void Bw_DoWork(object sender, DoWorkEventArgs e)
-        {
-            while (true)
-            {
-                TemperatureSensor.AddSensorValue(new SensorValueModel { Date = DateTime.Now, Value = rnd.NextDouble() * 10 + 20 });
-                FlowRateSensor.AddSensorValue(new SensorValueModel { Date = DateTime.Now, Value = rnd.NextDouble() * 20 + 600 });
-                Thread.Sleep(5000);
-            }
-        }
+            LightSensor.Initialize();
+        }        
     }
 }

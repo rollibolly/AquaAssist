@@ -19,3 +19,4 @@ AquaAssistClients/DesktopClient/AquaAssist/AquaAssist.Mobile/AquaAssist.Mobile.i
 *.p7s
 RaspberrySoft/AquaAssistAPI/node_modules/
 *.ide
+AquaAssistClients/DesktopClient/AquaAssist/packages/

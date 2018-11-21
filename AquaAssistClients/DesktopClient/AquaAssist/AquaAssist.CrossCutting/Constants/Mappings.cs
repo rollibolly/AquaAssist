@@ -20,5 +20,13 @@ namespace AquaAssist.CrossCutting.Constants
             { CurrentValueStatus.UNDER_WARNING, "#00BCD4" },
             { CurrentValueStatus.UNDER_CRITICAL, "#03A9F4" },
         };
+
+        public static Dictionary<SensorTypes, int> SensorTypeSensorIdMapping = new Dictionary<SensorTypes, int>
+        {
+            { SensorTypes.TemperatureAquarium, 1 },
+            { SensorTypes.FlowRate, 2},
+            { SensorTypes.TemperatureOutside, 3},
+            { SensorTypes.Light, 4},
+        };
     }
 }

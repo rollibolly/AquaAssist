@@ -1,10 +1,5 @@
 ﻿using AquaAssist.CrossCutting.Enum;
-using AquaAssist.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using AquaAssist.CrossCutting.Models;
 
 namespace AquaAssist.CrossCutting.Helpers
 {

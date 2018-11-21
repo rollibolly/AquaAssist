@@ -1,38 +1,72 @@
-﻿using AquaAssist.CrossCutting.Constants;
+﻿using AquaAssist.Communication;
+using AquaAssist.CrossCutting.Constants;
 using AquaAssist.CrossCutting.Enum;
 using AquaAssist.CrossCutting.Helpers;
-using AquaAssist.Models;
+using AquaAssist.CrossCutting.Models;
 using AquaAssist.Utils;
+using Hangfire;
 using LiveCharts;
 using LiveCharts.Defaults;
 using LiveCharts.Wpf;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows.Media;
 
 namespace AquaAssist.ViewModel
-{    
+{
 
     public class SensorViewModel:INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
         private double currentValue;
         private SensorModel sensor;
-        private List<string> labels;
-        private string unit;
-        private string description;
-        private int maxData = 15;
+        private List<string> labels;        
+        private int maxData = 25;
         private SensorValueLimitsModel limits;
         private Brush backgroundBrush;
         private double width = Diomensions.SENSOR_VIEW_WIDTH;
         private double height = Diomensions.SENSOR_VIEW_HEIGHT;
         private ICommand expandCommand;
+        private ICommand reloadCommand;
         private bool isMaximized = false;
+        private bool isLoading = false;
+
+        private DateTime startDate = DateTime.Now.AddDays(-1);
+        private DateTime endDate = DateTime.Now;
+
+        public SensorTypes SensorType { get; set; }        
+
+        public DateTime StartDate
+        {
+            get => startDate;
+            set
+            {
+                startDate = value;
+                OnPropertyChanged(nameof(StartDate));
+            }
+        }
+
+        public DateTime EndDate
+        {
+            get => endDate;
+            set
+            {
+                endDate = value;
+                OnPropertyChanged(nameof(EndDate));
+            }
+        }
+
+        public bool IsLoading
+        {
+            get => isLoading;
+            set
+            {
+                isLoading = value;
+                OnPropertyChanged(nameof(IsLoading));
+            }
+        }
 
         public bool IsMaximized
         {
@@ -83,6 +117,13 @@ namespace AquaAssist.ViewModel
             }            
         }
 
+        public ICommand ReloadCommand
+        {
+            get
+            {
+                return reloadCommand ?? (reloadCommand = new CommandHandler(() => ReloadSensorData(), true));
+            }
+        }
 
         public Brush BackgroundBrush
         {
@@ -170,25 +211,7 @@ namespace AquaAssist.ViewModel
                     Values = new ChartValues<ObservableValue>()
                 }
             };            
-        }
-
-        private void ResizeView()
-        {
-            if (IsMaximized)
-            {
-                Width = Diomensions.SENSOR_VIEW_WIDTH;
-                Height = Diomensions.SENSOR_VIEW_HEIGHT;
-                IsMaximized = false;
-            }
-            else
-            {
-                int widthMultiplier = (int)((System.Windows.SystemParameters.PrimaryScreenWidth - 100) / Diomensions.SENSOR_VIEW_WIDTH);
-                int heightMultiplier = (int)((System.Windows.SystemParameters.PrimaryScreenHeight - 200) / Diomensions.SENSOR_VIEW_HEIGHT);
-                Width = widthMultiplier * Diomensions.SENSOR_VIEW_WIDTH;
-                Height = System.Windows.SystemParameters.PrimaryScreenHeight - 200;
-                IsMaximized = true;
-            }
-        }
+        }        
 
         public double CurrentValue
         {
@@ -212,24 +235,86 @@ namespace AquaAssist.ViewModel
             }
             set
             {
-                sensor = value;                
+                sensor = value;
+                OnPropertyChanged(nameof(Sensor));
             }
+        }
+        
+        public void Initialize()
+        {
+            ReloadSensorData();
+            //RecurringJob.AddOrUpdate(() => Console.WriteLine("Hello"), Cron.Minutely);
+        }        
+
+
+        private void ResizeView()
+        {
+            if (IsMaximized)
+            {
+                Width = Diomensions.SENSOR_VIEW_WIDTH;
+                Height = Diomensions.SENSOR_VIEW_HEIGHT;
+                IsMaximized = false;
+            }
+            else
+            {
+                int widthMultiplier = (int)((System.Windows.SystemParameters.PrimaryScreenWidth - 100) / Diomensions.SENSOR_VIEW_WIDTH);
+                int heightMultiplier = (int)((System.Windows.SystemParameters.PrimaryScreenHeight - 200) / Diomensions.SENSOR_VIEW_HEIGHT);
+                Width = widthMultiplier * Diomensions.SENSOR_VIEW_WIDTH;
+                Height = System.Windows.SystemParameters.PrimaryScreenHeight - 200;
+                IsMaximized = true;
+            }
+        }
+
+        private void ReloadSensorData()
+        {
+            BackgroundWorker initWorker = new BackgroundWorker();
+            initWorker.DoWork += InitWorker_DoWork;
+            initWorker.RunWorkerCompleted += InitWorker_RunWorkerCompleted;
+
+            IsLoading = true;
+            initWorker.RunWorkerAsync(new object[] { SensorType, StartDate, EndDate });
+        }
+
+        // Loads sensor definition from REST API
+        private void InitWorker_DoWork(object sender, DoWorkEventArgs e)
+        {
+            object[] args = e.Argument as object[];
+
+            SensorTypes type = (SensorTypes)args[0];
+            DateTime start = (DateTime)args[1];
+            DateTime end = (DateTime)args[2];
+            SensorModel model = RestClient.GetSensorModel(type);
+            if (model != null)
+            {
+                model.Values = RestClient.GetSensorValues(model.Id, start, end, MaxData);
+            }
+            e.Result = model;
+        }
+
+        // Sets sensor definition
+        private void InitWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            Sensor = e.Result as SensorModel;
+            foreach (var item in Sensor.Values)
+            {
+                AddSensorValue(item);
+            }
+            IsLoading = false;
         }
 
         public void AddSensorValue(SensorValueModel val)
         {
-            if (Sensor.Values.Count() == MaxData)
-            {
-                Sensor.Values.RemoveAt(0);
+            if (LastHourSeries[0].Values.Count == MaxData)
+            {                
                 LastHourSeries[0].Values.RemoveAt(0);
                 Labels.RemoveAt(0);
-            }
-            Sensor.Values.Add(val);            
+            }            
             LastHourSeries[0].Values.Add(new ObservableValue(val.Value));
-            Labels.Add(val.Date.ToString("HH:mm:ss"));
-            CurrentValue = val.Value;
-            OnPropertyChanged(nameof(Sensor));            
+            Labels.Add($"{val.Date.ToString("yyyy/MM/dd")}\n{val.Date.ToString("mm:HH:ss")}");
+            CurrentValue = val.Value;            
         }        
+
+
 
         protected virtual void OnPropertyChanged(string propertyName = null)
         {

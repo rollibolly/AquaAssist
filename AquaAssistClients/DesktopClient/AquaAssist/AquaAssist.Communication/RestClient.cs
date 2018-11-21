@@ -1,43 +1,19 @@
-﻿using AquaAssist.Models;
+﻿using AquaAssist.CrossCutting.Constants;
+using AquaAssist.CrossCutting.Enum;
+using AquaAssist.CrossCutting.Helpers;
+using AquaAssist.CrossCutting.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AquaAssist.Communication
 {
     public static class RestClient
     {
-        public static string BaseUrl { get; set; } = "http://127.0.0.1:3000/";
-
-        public static SensorModel Test()
-        {
-            SensorModel res = new SensorModel();
-            try
-            {                
-                WebRequest request = WebRequest.Create("http://127.0.0.1:3000/SensorDefinition?id=1");
-                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-
-                if (response.StatusCode == HttpStatusCode.OK)
-                {
-                    Stream dataStream = response.GetResponseStream();
-                    DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(SensorModel));
-                    StreamReader reader = new StreamReader(dataStream);
-                    //string str = reader.ReadToEnd();
-                    res = serializer.ReadObject(dataStream) as SensorModel;
-                }
-            }
-            catch(Exception ex)
-            {
-                return res;
-            }
-            return res;
-        }
+        public static string BaseUrl { get; set; } = "http://127.0.0.1:3000/";        
 
         /// <summary>
         /// Generic Get Function
@@ -56,8 +32,7 @@ namespace AquaAssist.Communication
 
                 if (arguments != null && arguments.Count() > 0)
                 {
-                    query = $"?{string.Join("&", arguments.Select(x => $"{x.Key}={x.Value}"))}";
-                    query = Uri.EscapeUriString(query);
+                    query = Uri.EscapeUriString($"?{string.Join("&", arguments.Select(x => $"{x.Key}={x.Value}"))}");                    
                 }           
                 
                 WebRequest request = WebRequest.Create($"{BaseUrl}{root}{query}");
@@ -80,6 +55,11 @@ namespace AquaAssist.Communication
         public static List<SensorModel> GetSensorModels()
         {
             return Get<List<SensorModel>>("SensorDefinition", null);
+        }
+
+        public static SensorModel GetSensorModel(SensorTypes type)
+        {
+            return GetSensorModelById(Mappings.SensorTypeSensorIdMapping[type]);
         }
 
         public static SensorModel GetSensorModelById(int id)
@@ -106,8 +86,8 @@ namespace AquaAssist.Communication
                 new Dictionary<string, string>
                 {
                     { "id", sensorId.ToString() },
-                    { "start", start.ToString("yyyy-MM-dd HH:mm:ss") },
-                    { "end", end.ToString("yyyy-MM-dd HH:mm:ss") },
+                    { "start", start.ToAquaAssistDateTimeString() },
+                    { "end", end.ToAquaAssistDateTimeString() },
                     { "max", max.ToString() },
                 });
         }

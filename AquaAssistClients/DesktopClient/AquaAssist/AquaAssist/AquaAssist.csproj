@@ -38,6 +38,12 @@
     <Reference Include="ControlzEx, Version=3.0.2.4, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\ControlzEx.3.0.2.4\lib\net45\ControlzEx.dll</HintPath>
     </Reference>
+    <Reference Include="Hangfire.Core, Version=1.6.21.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Hangfire.Core.1.6.21\lib\net45\Hangfire.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Hangfire.SqlServer, Version=1.6.21.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Hangfire.SqlServer.1.6.21\lib\net45\Hangfire.SqlServer.dll</HintPath>
+    </Reference>
     <Reference Include="LiveCharts, Version=0.9.7.0, Culture=neutral, PublicKeyToken=0bc1f845d1ebb8df, processorArchitecture=MSIL">
       <HintPath>..\packages\LiveCharts.0.9.7\lib\net45\LiveCharts.dll</HintPath>
     </Reference>
@@ -55,6 +61,18 @@
     </Reference>
     <Reference Include="MahApps.Metro.IconPacks.MaterialLight, Version=2.3.0.4, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MahApps.Metro.IconPacks.MaterialLight.2.3.0\lib\net46\MahApps.Metro.IconPacks.MaterialLight.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.3.0.0\lib\net45\Microsoft.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Host.SystemWeb, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Host.SystemWeb.3.0.0\lib\net45\Microsoft.Owin.Host.SystemWeb.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.5.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
+      <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -154,10 +172,6 @@
     <ProjectReference Include="..\AquaAssist.CrossCutting\AquaAssist.CrossCutting.csproj">
       <Project>{fa7e4861-6251-403e-815e-2dea220ec9a3}</Project>
       <Name>AquaAssist.CrossCutting</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\AquaAssist.Models\AquaAssist.Models.csproj">
-      <Project>{eb2e99c3-cb82-45a2-8f60-15be86cd1205}</Project>
-      <Name>AquaAssist.Models</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
