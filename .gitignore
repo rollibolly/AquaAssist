@@ -20,3 +20,7 @@ AquaAssistClients/DesktopClient/AquaAssist/AquaAssist.Mobile/AquaAssist.Mobile.i
 RaspberrySoft/AquaAssistAPI/node_modules/
 *.ide
 AquaAssistClients/DesktopClient/AquaAssist/packages/
+.gitignore_LOCAL_16184
+.gitignore_BASE_16184
+.gitignore_BACKUP_16184
+.gitignore_REMOTE_16184

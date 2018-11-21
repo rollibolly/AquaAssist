@@ -1,4 +1,5 @@
 ﻿
+using AquaAssist.ViewModel;
 using MahApps.Metro.Controls;
 using System;
 using System.Collections.Generic;
@@ -26,6 +27,7 @@ namespace AquaAssist
         {
             
             InitializeComponent();
+            DataContext = new MainWindowViewModel();
         }
     }
 }

@@ -53,6 +53,7 @@
     <Compile Include="Helpers\DateTimeExtensions.cs" />
     <Compile Include="Helpers\SensorValueLimitExtension.cs" />
     <Compile Include="Models\SensorModel.cs" />
+    <Compile Include="Models\SensorQuery.cs" />
     <Compile Include="Models\SensorValueLimitsModel.cs" />
     <Compile Include="Models\SensorValueModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

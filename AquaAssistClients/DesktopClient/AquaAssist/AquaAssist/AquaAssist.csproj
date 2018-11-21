@@ -98,9 +98,12 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Converters\BoolToVisibilityConverter.cs" />
+    <Compile Include="Utils\AccentColorMenuData.cs" />
     <Compile Include="Utils\CommandHandler.cs" />
+    <Compile Include="ViewModel\MainWindowViewModel.cs" />
     <Compile Include="ViewModel\MonitorizationViewModel.cs" />
     <Compile Include="ViewModel\SensorViewModel.cs" />
+    <Compile Include="ViewModel\SensorViewModelProperties.cs" />
     <Compile Include="View\MonitorizationView.xaml.cs">
       <DependentUpon>MonitorizationView.xaml</DependentUpon>
     </Compile>
