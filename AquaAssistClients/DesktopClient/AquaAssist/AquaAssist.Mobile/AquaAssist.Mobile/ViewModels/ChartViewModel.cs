@@ -22,11 +22,8 @@ namespace AquaAssist.Mobile.ViewModels
             get => chartData;
             set
             {
-                if (value != null)
-                {
-                    chartData = value;
-                    OnPropertyChanged(nameof(ChartData));
-                }
+                chartData = value;
+                OnPropertyChanged(nameof(ChartData));
             }
         }
 
