@@ -39,11 +39,42 @@ api.get('/SensorValues', async (request, reply) => {
             .header('Content-Type', 'application/json; charset=utf-8')
             .send(res);        
         });
-    } else {
+    } 
+    else if (request.query.n != undefined &&
+            request.query.id){
+        db.readTopNSensorValues(request.query.id, request.query.n, (res)=>{
+            console.log(res);
+            reply
+            .code(200)
+            .header('Content-Type', 'application/json; charset=utf-8')
+            .send(res);
+        });
+    } 
+    else {
         db.readSensorDefinitions((res) => {            
             reply
                 .code(404)                
                 .send("Error");        
+        });    
+    } 
+});
+
+api.get('/Relay', async (request, reply) => {          
+    if (request.query.id != undefined){
+        db.readSensorDefinitionById(request.query.id, (res)=>{
+            console.log(res);      
+            reply
+            .code(200)
+            .header('Content-Type', 'application/json; charset=utf-8')
+            .send(res);        
+        });
+    } else {
+        db.readRelayDefinitions((res) => {
+            console.log(res);                
+            reply
+                .code(200)
+                .header('Content-Type', 'application/json; charset=utf-8')
+                .send(res);        
         });    
     } 
 });

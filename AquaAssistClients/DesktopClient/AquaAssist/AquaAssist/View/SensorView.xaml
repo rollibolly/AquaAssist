@@ -57,7 +57,9 @@
         <Border x:Name="Border1" Grid.Row="0" Grid.RowSpan="4" CornerRadius="5" Background="White" />
         <Border Grid.Row="0" Grid.RowSpan="3" Background="{Binding BackgroundBrush}" ></Border>
         <TextBlock Grid.Row="0" Text="{Binding Sensor.SensorName}" TextAlignment="Center" Padding="10, 10, 0, 5" Foreground="White" FontSize="18"/>
-        <TextBlock Grid.Row="1" TextAlignment="Center" Foreground="#59FFFFFF" Padding="0,0,0,20">2014.12.25</TextBlock>
+            <TextBlock Grid.Row="1" 
+                       Text="{Binding LastUpdateTs, StringFormat='{}{0:yyyy/MM/dd a\\t hh:mm:ss}'}" 
+                       TextAlignment="Center" Foreground="#59FFFFFF" Padding="0,0,0,20"></TextBlock>
         <lvc:CartesianChart Grid.Row="2" Margin="3" 
                                 Series="{Binding DisplaySeries}" 
                                 Hoverable="False" DataTooltip="{x:Null}">
@@ -72,17 +74,23 @@
                 </lvc:Axis>
             </lvc:CartesianChart.AxisX>
         </lvc:CartesianChart>
-            
-                <StackPanel Grid.Row="3"
-                        VerticalAlignment="Center" 
-                        Margin="25, 0">
-                <TextBlock Text="{Binding Sensor.Description}" Opacity=".4" FontSize="13"></TextBlock>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Foreground="#303030" FontSize="40" Text="{Binding CurrentValue, StringFormat={}{0:N1}}" />
-                    <TextBlock Text="{Binding Sensor.Unit}" Foreground="#303030" FontSize="18" VerticalAlignment="Bottom" Margin="8, 6"/>
-                </StackPanel>
-            </StackPanel>
 
+            <Grid Grid.Row="3"
+                  Margin="25, 0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <StackPanel VerticalAlignment="Center"
+                            Grid.Column="0">
+                    <TextBlock Text="{Binding Sensor.Description}" Opacity=".4" FontSize="13"></TextBlock>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Foreground="#303030" FontSize="40" Text="{Binding CurrentValue, StringFormat={}{0:N1}}" />
+                        <TextBlock Text="{Binding Sensor.Unit}" Foreground="#303030" FontSize="18" VerticalAlignment="Bottom" Margin="8, 6"/>
+                    </StackPanel>
+                </StackPanel>
+                
+            </Grid>
             <Button  Grid.Column="1"
                      Grid.Row="3"
                      HorizontalAlignment="Right" 
@@ -94,11 +102,26 @@
                 <iconPacks:PackIconFontAwesome Kind="ExpandSolid"/>
             </Button>
         </Grid>
-        <!--
+
         <Grid Name="gridLoadingScreen" Visibility="{Binding IsLoading, Converter={StaticResource bool2Visibility}}">
             <Border BorderThickness="0" Background="{DynamicResource ControlBackgroundBrush}" Opacity=".5"/>
             <Controls:ProgressRing></Controls:ProgressRing>
         </Grid>
-        -->
+        <iconPacks:PackIconModern Kind="Disconnect" 
+                                  Width="30"
+                                  Height="30"                                  
+                                  Margin="10, 10, 0, 0">
+            <iconPacks:PackIconModern.Style>
+                <Style TargetType="{x:Type iconPacks:PackIconModern}">
+                    <Setter Property="Visibility" Value="Collapsed"></Setter>
+                    <Setter Property="Foreground" Value="{DynamicResource WhiteBrush}"></Setter>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsNetworkError}" Value="True">
+                            <Setter Property="Visibility" Value="Visible"></Setter>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </iconPacks:PackIconModern.Style>
+        </iconPacks:PackIconModern>
     </Grid>
 </UserControl>

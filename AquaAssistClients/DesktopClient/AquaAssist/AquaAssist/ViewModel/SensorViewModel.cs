@@ -15,6 +15,7 @@ using System.ComponentModel;
 using System.Timers;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Threading;
 
 namespace AquaAssist.ViewModel
 {
@@ -23,7 +24,7 @@ namespace AquaAssist.ViewModel
     {
         private ICommand expandCommand;
         private ICommand reloadCommand;
-        private Timer last24Timer;
+        private System.Timers.Timer last24Timer;
 
         public ICommand ExpandCommand
         {
@@ -37,7 +38,7 @@ namespace AquaAssist.ViewModel
         {
             get
             {
-                return reloadCommand ?? (reloadCommand = new CommandHandler(() => ReloadSensorData(), true));
+                return reloadCommand ?? (reloadCommand = new CommandHandler(() => InitSensorData(), true));
             }
         }
 
@@ -54,12 +55,48 @@ namespace AquaAssist.ViewModel
                 
         public void Initialize()
         {
-            ReloadSensorData();
+            InitSensorData();            
+        }
 
-            last24Timer = new Timer(1000);
+        private void InitSensorData()
+        {
+            BackgroundWorker initWorker = new BackgroundWorker();
+            initWorker.DoWork += InitWorker_DoWork;
+            initWorker.RunWorkerCompleted += InitWorker_RunWorkerCompleted;
+
+            IsLoading = true;
+            initWorker.RunWorkerAsync(SensorType);
+        }
+
+        // Loads sensor definition from REST API
+        private void InitWorker_DoWork(object sender, DoWorkEventArgs e)
+        {
+            SensorTypes type = (SensorTypes)e.Argument;
+            SensorModel model = null;
+            while (true)
+            {
+                model = RestClient.GetSensorModel(type);
+                if (model != null)
+                    break;
+                IsNetworkError = true;
+                Thread.Sleep(1000);
+
+            }
+            IsNetworkError = false;
+            e.Result = model;
+        }
+
+        // Sets sensor definition
+        private void InitWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {            
+            Sensor = e.Result as SensorModel;
+            
+            Last24Timer_Elapsed(null, null);
+            last24Timer = new System.Timers.Timer(1000);
             last24Timer.Elapsed += Last24Timer_Elapsed;
             last24Timer.AutoReset = true;
             last24Timer.Enabled = true;
+            IsLoading = false;
         }
 
         private void Last24Timer_Elapsed(object sender, ElapsedEventArgs e)
@@ -67,36 +104,43 @@ namespace AquaAssist.ViewModel
             BackgroundWorker last24Worker = new BackgroundWorker();
             last24Worker.DoWork += Last24Worker_DoWork;
             last24Worker.RunWorkerCompleted += Last24Worker_RunWorkerCompleted;
-            return;
+            
             last24Worker.RunWorkerAsync(new SensorQuery
             {
-                Type = SensorType,
-                EndDate = DateTime.Now,
-                StartDate = DateTime.Now.AddHours(-1),
+                Id = Sensor.Id,                
                 MaxData = MaxData
             });
-        }
-
-        private void Last24Worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
-        {
-            Sensor = e.Result as SensorModel;
-            foreach (var item in Sensor.Values)
-            {
-                AddSensorValue(item);
-            }
         }
 
         private void Last24Worker_DoWork(object sender, DoWorkEventArgs e)
         {
             SensorQuery query = e.Argument as SensorQuery;
-            
-            SensorModel model = RestClient.GetSensorModel(query.Type);
-            if (model != null)
+            List<SensorValueModel> result = null;
+
+            while (true)
             {
-                model.Values = RestClient.GetSensorValues(model.Id, query.StartDate, query.EndDate, query.MaxData);
+                result = RestClient.GetSensorValues(query.Id, query.MaxData);
+                if (result != null)
+                    break;
+                IsNetworkError = true;
+                Thread.Sleep(1000);
             }
-            e.Result = model;
+            IsNetworkError = false;
+            e.Result = result;
         }
+
+        private void Last24Worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            List<SensorValueModel> s = e.Result as List<SensorValueModel>;
+            s.Reverse();
+            foreach (var item in s)
+            {
+                AddSensorValue(item);
+            }
+            LastUpdateTs = DateTime.Now;
+        }
+
+        
 
         private void ResizeView()
         {
@@ -116,46 +160,11 @@ namespace AquaAssist.ViewModel
             }
         }
 
-        private void ReloadSensorData()
-        {
-            BackgroundWorker initWorker = new BackgroundWorker();
-            initWorker.DoWork += InitWorker_DoWork;
-            initWorker.RunWorkerCompleted += InitWorker_RunWorkerCompleted;
-
-            IsLoading = true;
-            initWorker.RunWorkerAsync(new object[] { SensorType, StartDate, EndDate });
-        }
-
-        // Loads sensor definition from REST API
-        private void InitWorker_DoWork(object sender, DoWorkEventArgs e)
-        {
-            object[] args = e.Argument as object[];
-
-            SensorTypes type = (SensorTypes)args[0];
-            DateTime start = (DateTime)args[1];
-            DateTime end = (DateTime)args[2];
-            SensorModel model = RestClient.GetSensorModel(type);
-            if (model != null)
-            {
-                model.Values = RestClient.GetSensorValues(model.Id, start, end, MaxData);
-            }
-            e.Result = model;
-        }
-
-        // Sets sensor definition
-        private void InitWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
-        {
-            SensorModel sensor = e.Result as SensorModel;
-            foreach (var item in sensor.Values)
-            {
-                AddSensorValue(item);
-            }
-            IsLoading = false;
-        }
+        
 
         public void AddSensorValue(SensorValueModel val)
         {
-            //if (Sensor.Values.Where(x => x.Date == val.Date).FirstOrDefault() == null)
+            if (Sensor.Values.Where(x => x.Date == val.Date && x.Value == val.Value).FirstOrDefault() == null)
             {
                 ObservableValue newValue = new ObservableValue(val.Value);
 
@@ -167,7 +176,7 @@ namespace AquaAssist.ViewModel
                 }
                 DisplaySeries[0].Values.Add(newValue);
                 Sensor.Values.Add(val);
-                Labels.Add($"{val.Date.ToString("yyyy/MM/dd")}\n{val.Date.ToString("mm:HH:ss")}");
+                Labels.Add($"{val.Date.ToString("hh:mm:ss")}");
                 CurrentValue = val.Value;
             }
         }                

@@ -52,6 +52,7 @@
     <Compile Include="Helpers\CurrentValueStatusExtension.cs" />
     <Compile Include="Helpers\DateTimeExtensions.cs" />
     <Compile Include="Helpers\SensorValueLimitExtension.cs" />
+    <Compile Include="Models\RelayModel.cs" />
     <Compile Include="Models\SensorModel.cs" />
     <Compile Include="Models\SensorQuery.cs" />
     <Compile Include="Models\SensorValueLimitsModel.cs" />

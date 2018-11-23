@@ -79,7 +79,7 @@ namespace AquaAssist.Communication
                     { "id", sensorId.ToString() }
                 });
         }
-
+        
         public static List<SensorValueModel> GetSensorValues(int sensorId, DateTime start, DateTime end, int max)
         {
             return Get<List<SensorValueModel>>("SensorValues",
@@ -89,6 +89,22 @@ namespace AquaAssist.Communication
                     { "start", start.ToAquaAssistDateTimeString() },
                     { "end", end.ToAquaAssistDateTimeString() },
                     { "max", max.ToString() },
+                });
+        }
+
+        /// <summary>
+        /// Returns the Top N SensorValueModel, orderd by TimeStamp (Desc)
+        /// </summary>
+        /// <param name="sensorId">Represends the Sensor ID in the database</param>
+        /// <param name="N">the number of records to be returned</param>
+        /// <returns></returns>
+        public static List<SensorValueModel> GetSensorValues(int sensorId, int N)
+        {
+            return Get<List<SensorValueModel>>("SensorValues",
+                new Dictionary<string, string>
+                {
+                    { "id", sensorId.ToString() },                    
+                    { "n", N.ToString() }
                 });
         }
     }

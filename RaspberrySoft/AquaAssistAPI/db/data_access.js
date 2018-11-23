@@ -1,4 +1,5 @@
-var SensorDefinitionModel = require("./../models/SensorDefinition.js")
+var SensorDefinitionModel = require("./../models/SensorDefinition.js");
+var RelayDefinitionModel = require("./../models/RelayDefinition.js");
 
 const { Pool, Client } = require('pg')
 
@@ -16,6 +17,8 @@ var testFunction = function() {
     pool.end()
   })
 }
+
+// Sensor Definition
 
 var readSensorDefinitions = function(callback){  
   pool.query('SELECT * FROM sensors.sensor_definition', (err, res) => {                             
@@ -51,10 +54,34 @@ var readSensorValues = function(sensorId,startDate, endDate, maxEntry, callback)
   });  
 }
 
+var readTopNSensorValues = function(sensorId, n, callback){  
+  var text = 'select * from sensors.sensor_data where sensor_id = $1 and ts <= now() order by ts desc limit $2';  
+  var values = [sensorId, n]; 
+  console.log(values); 
+  pool.query(text, values, (err, res) => {  
+    if (err) {
+      callback(err);      
+    }                     
+    callback(SensorDefinitionModel.dbResultToSensorValueArray(res));
+  });  
+}
+
+// Relay Definition
+
+var readRelayDefinitions = function(callback){  
+  pool.query('SELECT * FROM relays.relay_data', (err, res) => {                             
+    callback(RelayDefinitionModel.dbResultToRelayDefinitionArray(res));
+  });  
+}
+
+
 module.exports = {
   testFunction,
   readSensorDefinitions,
   readSensorDefinitionById,
   readSensorValuesBySensorId,
-  readSensorValues
+  readSensorValues,
+  readTopNSensorValues,
+
+  readRelayDefinitions
 }

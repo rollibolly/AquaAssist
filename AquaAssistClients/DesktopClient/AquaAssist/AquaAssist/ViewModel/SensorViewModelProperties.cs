@@ -18,6 +18,7 @@ namespace AquaAssist.ViewModel
     {
         public event PropertyChangedEventHandler PropertyChanged;
         private double currentValue;
+        private DateTime lastUpdateTs;
         private SensorModel sensor;
         private List<string> labels;
         private int maxData = 12;
@@ -27,9 +28,20 @@ namespace AquaAssist.ViewModel
         private double height = Diomensions.SENSOR_VIEW_HEIGHT;        
         private bool isMaximized = false;
         private bool isLoading = false;
+        private bool isNetworkError = false;
 
         private DateTime startDate = DateTime.Now.AddDays(-1);
         private DateTime endDate = DateTime.Now;
+
+        public bool IsNetworkError
+        {
+            get { return isNetworkError; }
+            set
+            {
+                isNetworkError = value;
+                OnPropertyChanged(nameof(IsNetworkError));
+            }
+        }
 
         public double CurrentValue
         {
@@ -40,6 +52,16 @@ namespace AquaAssist.ViewModel
                 OnPropertyChanged(nameof(CurrentValue));
 
                 BackgroundBrush = colorsMap[Limits.GetStatusFromValue(currentValue)];
+            }
+        }
+
+        public DateTime LastUpdateTs
+        {
+            get { return lastUpdateTs; }
+            set
+            {
+                lastUpdateTs = value;
+                OnPropertyChanged(nameof(LastUpdateTs));
             }
         }
 
