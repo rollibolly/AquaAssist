@@ -2,6 +2,7 @@
 using AquaAssist.CrossCutting.Enum;
 using AquaAssist.CrossCutting.Helpers;
 using AquaAssist.CrossCutting.Models;
+using AquaAssist.Utils;
 using LiveCharts;
 using System;
 using System.Collections.Generic;

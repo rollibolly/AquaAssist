@@ -31,8 +31,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="PresentationCore" />
-    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Runtime.Serialization" />
@@ -49,7 +47,6 @@
     <Compile Include="Enum\ChartDisplayMode.cs" />
     <Compile Include="Enum\CurrentValueStatus.cs" />
     <Compile Include="Enum\SensorTypes.cs" />
-    <Compile Include="Helpers\CurrentValueStatusExtension.cs" />
     <Compile Include="Helpers\DateTimeExtensions.cs" />
     <Compile Include="Helpers\SensorValueLimitExtension.cs" />
     <Compile Include="Models\RelayModel.cs" />

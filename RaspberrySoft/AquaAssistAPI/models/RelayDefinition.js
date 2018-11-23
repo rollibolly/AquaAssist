@@ -5,7 +5,8 @@ var RelayDefinition = new SchemaObject({
     Name: String,
     State: Boolean,
     DefaultState:Boolean,
-    Description: String
+    Description: String,
+    LastStatusChange: Object
 });
 
 var dbResultToRelayDefinitionArray = function(result){
@@ -22,7 +23,8 @@ var dbResultToRelayDefinition = function(element){
                 Name: element.name,                
                 State: element.state,
                 DefaultState: element.default_state,
-                Description: element.description
+                Description: element.description,
+                LastStatusChange: element.last_status_change_ts
             });                    
 }
 

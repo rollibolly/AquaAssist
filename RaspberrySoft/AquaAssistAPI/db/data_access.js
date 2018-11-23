@@ -74,6 +74,18 @@ var readRelayDefinitions = function(callback){
   });  
 }
 
+var changeRelayState = function(relayId, callback){
+  var text = 'update relays.relay_data set state = not state, last_status_change_ts = now() where id = $1';
+  var values = [relayId];
+  pool.query(text, values, (err, res)=>{
+    if (err){
+      callback(err);
+    }else{
+      callback(RelayDefinitionModel.dbResultToRelayDefinition(res.rows[0]));
+    }
+  });
+}
+
 
 module.exports = {
   testFunction,
