@@ -14,24 +14,28 @@ DoReply = function(reply, err, res){
 }
 
 GetSensor = function(request, reply){    
+    console.log('GetSensor')
     db.readSensorDefinitions(request.query, (err, res) => {        
         DoReply(reply, err, res);
     });    
 }
 
 GetSensorValues = function(request, reply){
+    console.log('GetSensorValues')
     db.readSensorValues(request.query, (err, res) => {        
         DoReply(reply, err, res);
     });
 }
 
 GetRelay = function(request, reply){
+    console.log('GetRelay')
     db.readRelay(request.query, (err, res) => {        
         DoReply(reply, err, res);
     });
 }
 
 UpdateRelay = function(request, reply){   
+    console.log('UpdateRelay')
     db.updateRelay(request.query, request.body, (err, res) => {        
         DoReply(reply, err, res);
     });
