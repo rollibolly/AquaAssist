@@ -35,7 +35,7 @@ var dbResultToSensorDefinitionArray = function(result){
             Unit: element.measuring_unit,
             Description: element.description
         }));        
-    });    
+    }); 
     return resArray;
 }
 

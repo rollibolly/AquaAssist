@@ -13,7 +13,7 @@ namespace AquaAssist.Communication
 {
     public static class RestClient
     {
-        public static string BaseUrl { get; set; } = "http://192.168.0.103:3000/";        
+        public static string BaseUrl { get; set; } = "http://127.0.0.1:8080/";        
 
         /// <summary>
         /// Generic Get Function
@@ -54,7 +54,7 @@ namespace AquaAssist.Communication
 
         public static List<SensorModel> GetSensorModels()
         {
-            return Get<List<SensorModel>>("SensorDefinition", null);
+            return Get<List<SensorModel>>("Sensor", null);
         }
 
         public static SensorModel GetSensorModel(SensorTypes type)
@@ -64,7 +64,7 @@ namespace AquaAssist.Communication
 
         public static SensorModel GetSensorModelById(int id)
         {
-            return Get<SensorModel>("SensorDefinition", 
+            return Get<SensorModel>("Sensor", 
                 new Dictionary<string, string>
                 {
                     {"id", id.ToString()}
@@ -73,7 +73,7 @@ namespace AquaAssist.Communication
 
         public static List<SensorValueModel> GetSensorValuesBySensorId(int sensorId)
         {
-            return Get<List<SensorValueModel>>("SensorValues",
+            return Get<List<SensorValueModel>>("Sensor/Values",
                 new Dictionary<string, string>
                 {
                     { "id", sensorId.ToString() }
@@ -82,7 +82,7 @@ namespace AquaAssist.Communication
         
         public static List<SensorValueModel> GetSensorValues(int sensorId, DateTime start, DateTime end, int max)
         {
-            return Get<List<SensorValueModel>>("SensorValues",
+            return Get<List<SensorValueModel>>("Sensor/Values",
                 new Dictionary<string, string>
                 {
                     { "id", sensorId.ToString() },
@@ -100,7 +100,7 @@ namespace AquaAssist.Communication
         /// <returns></returns>
         public static List<SensorValueModel> GetSensorValues(int sensorId, int N)
         {
-            return Get<List<SensorValueModel>>("SensorValues",
+            return Get<List<SensorValueModel>>("Sensor/Values",
                 new Dictionary<string, string>
                 {
                     { "id", sensorId.ToString() },                    
