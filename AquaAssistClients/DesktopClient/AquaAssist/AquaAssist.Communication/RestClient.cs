@@ -13,7 +13,7 @@ namespace AquaAssist.Communication
 {
     public static class RestClient
     {
-        public static string BaseUrl { get; set; } = "http://127.0.0.1:3000/";        
+        public static string BaseUrl { get; set; } = "http://192.168.0.103:3000/";        
 
         /// <summary>
         /// Generic Get Function

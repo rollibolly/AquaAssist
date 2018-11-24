@@ -2,7 +2,7 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="AquaAssist.Mobile.Pages.RootMasterDetailPageMaster"
-             Title="Master">
+             Title="AquariumAssist">
   <StackLayout>
     <ListView x:Name="MenuItemsListView"
               SeparatorVisibility="None"
@@ -24,19 +24,32 @@
           <Label
               Grid.Column="1"
               Grid.Row="2"
-              Text="AppName"
+              Text="AquaAssist"
               Style="{DynamicResource SubtitleStyle}"/>
         </Grid>
       </ListView.Header>
       <ListView.ItemTemplate>
         <DataTemplate>
-          <ViewCell>
-            <StackLayout Padding="15,10" HorizontalOptions="FillAndExpand">
-              <Label VerticalOptions="FillAndExpand" 
+            <ViewCell>
+                <Grid Padding="5,10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="30"/>
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                <Image 
+                    Grid.Column="0"
+                    Source="{Binding Icon}"  
+                    HorizontalOptions="Start"
+                    HeightRequest="20"
+                    WidthRequest="20"/>
+                <Label 
+                    Grid.Column="1"
+                    HorizontalOptions="Start"
+                    VerticalOptions="FillAndExpand" 
                     VerticalTextAlignment="Center" 
                     Text="{Binding Title}" 
-                    FontSize="24"/>
-            </StackLayout>
+                    FontSize="Medium"/>
+                </Grid>
           </ViewCell>
         </DataTemplate>
       </ListView.ItemTemplate>

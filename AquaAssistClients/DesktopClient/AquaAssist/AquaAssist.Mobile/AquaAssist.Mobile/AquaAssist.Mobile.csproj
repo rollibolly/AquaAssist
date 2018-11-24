@@ -15,12 +15,20 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Pages\RootMasterDetailPageMenuItem.cs">
+    <ProjectReference Include="..\..\AquaAssist.Communication\AquaAssist.Communication.csproj" />
+    <ProjectReference Include="..\..\AquaAssist.CrossCutting\AquaAssist.CrossCutting.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Models\MenuItem.cs">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Update="Pages\ActualValuesPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
     <EmbeddedResource Update="Pages\ChartPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
