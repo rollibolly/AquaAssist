@@ -11,89 +11,120 @@ const pool = new Pool({
   port: 5432,
 })
 
-var testFunction = function() {
-  pool.query('SELECT NOW()', (err, res) => {
-    console.log(err, res)
-    pool.end()
+// Executes a query with parameters
+var RunQuery = function(queryText, queryParams, mappingFunc, callback){
+  pool.query(queryText, queryParams, (err, res) => {
+    if (err)
+      callback(err, null);
+    else
+    {
+      try {
+        if (mappingFunc != null) {
+          var transformedData = mappingFunc(res);
+          callback(null, transformedData);
+        } else {
+          callback(null, null)
+        }
+      } catch(ex) {
+        callback(ex, null);
+      }      
+    }      
   })
 }
 
 // Sensor Definition
-
-var readSensorDefinitions = function(callback){  
-  pool.query('SELECT * FROM sensors.sensor_definition', (err, res) => {                             
-    callback(SensorDefinitionModel.dbResultToSensorDefinitionArray(res));
-  });  
+var readSensorDefinitions = function(query, callback){  
+  if (query.id == undefined)
+    RunQuery(
+      'SELECT * FROM sensors.sensor_definition', 
+      [], 
+      SensorDefinitionModel.dbResultToSensorDefinitionArray, 
+      callback);  
+  else
+    RunQuery(
+      'SELECT * FROM sensors.sensor_definition WHERE id = $1', 
+      [query.id], 
+      SensorDefinitionModel.dbResultToSensorDefinition, 
+      callback);  
 }
 
-var readSensorDefinitionById = function(id, callback){  
-  var text = 'SELECT * FROM sensors.sensor_definition WHERE id = $1';
-  var values = [id];
-  pool.query(text, values, (err, res) => {                         
-    callback(SensorDefinitionModel.dbResultToSensorDefinition(res));
-  });  
-}
-
-var readSensorValuesBySensorId = function(id, callback){  
-  var text = 'SELECT * FROM sensors.sensor_data WHERE sensor_id = $1';
-  var values = [id];
-  pool.query(text, values, (err, res) => {                       
-    callback(SensorDefinitionModel.dbResultToSensorValueArray(res));
-  });  
-}
-
-var readSensorValues = function(sensorId,startDate, endDate, maxEntry, callback){  
-  var text = 'select * from sensors.get_sensor_data($1, $2, $3, $4)';  
-  var values = [sensorId, startDate, endDate, maxEntry]; 
-  console.log(values); 
-  pool.query(text, values, (err, res) => {  
-    if (err) {
-      callback(err);      
-    }                     
-    callback(SensorDefinitionModel.dbResultToSensorValueArray(res));
-  });  
-}
-
-var readTopNSensorValues = function(sensorId, n, callback){  
-  var text = 'select * from sensors.sensor_data where sensor_id = $1 and ts <= now() order by ts desc limit $2';  
-  var values = [sensorId, n]; 
-  console.log(values); 
-  pool.query(text, values, (err, res) => {  
-    if (err) {
-      callback(err);      
-    }                     
-    callback(SensorDefinitionModel.dbResultToSensorValueArray(res));
-  });  
-}
-
-// Relay Definition
-
-var readRelayDefinitions = function(callback){  
-  pool.query('SELECT * FROM relays.relay_data', (err, res) => {                             
-    callback(RelayDefinitionModel.dbResultToRelayDefinitionArray(res));
-  });  
-}
-
-var changeRelayState = function(relayId, callback){
-  var text = 'update relays.relay_data set state = not state, last_status_change_ts = now() where id = $1';
-  var values = [relayId];
-  pool.query(text, values, (err, res)=>{
-    if (err){
-      callback(err);
-    }else{
-      callback(RelayDefinitionModel.dbResultToRelayDefinition(res.rows[0]));
-    }
-  });
+// Sensor Values
+var readSensorValues = function(query, callback){
+  if (
+    query.id != undefined && 
+    query.start != undefined &&
+    query.end != undefined &&
+    query.max != undefined
+    ) {
+      RunQuery(
+        'SELECT * FROM sensors.get_sensor_data($1, $2, $3, $4)', 
+        [query.id, query.start, query.end, query.max], 
+        SensorDefinitionModel.dbResultToSensorValueArray, 
+        callback);  
+  } else if 
+    (
+    query.id != undefined &&
+    query.n != undefined
+    ) {
+      RunQuery(
+        'select * from sensors.sensor_data where sensor_id = $1 and ts <= now() order by ts desc limit $2', 
+        [query.id, query.n], 
+        SensorDefinitionModel.dbResultToSensorValueArray, 
+        callback);  
+  } else {
+    callback(new Error("Input parameters don't match"), null);
+  }
 }
 
 
-module.exports = {
-  testFunction,
+var readRelay = function(query, callback){
+  if (query.id == undefined) {
+    RunQuery(
+      'SELECT * FROM relays.relay_data', 
+      [], 
+      RelayDefinitionModel.dbResultToRelayDefinitionArray, 
+      callback);  
+  } else {
+    RunQuery(
+      'SELECT * FROM relays.relay_data WHERE id = $1', 
+      [query.id], 
+      RelayDefinitionModel.dbResultToRelayDefinitionArray, 
+      callback);  
+  }
+}
+
+var updateRelay = function(query, body, callback) {
+  if (query.id == undefined) {
+    callback(new Error("Id parameter is required for the update"), null);
+  } else if (!RelayDefinitionModel.IsValid(body)) {
+    callback(new Error("Request body is not a valid Relay object."), null);
+  } else {    
+    readRelay(query, (err, res) => {      
+      if (res[0].State != body.State) {
+        RunQuery(
+          'UPDATE relays.relay_data SET name = $1, state = $2, default_state = $3, description = $4, last_status_change_ts = now() WHERE id = $5', 
+          [body.Name, body.State, body.DefaultState, body.Description, query.id], 
+          null, 
+          () => {
+            readRelay(query, callback)
+          });  
+      } else {
+        RunQuery(
+          'UPDATE relays.relay_data SET name = $1, default_state = $2, description = $3 WHERE id = $4', 
+          [body.Name, body.DefaultState, body.Description, query.id], 
+          null, 
+          () => {
+            readRelay(query, callback)
+          });
+      }
+    })    
+  }
+}
+
+module.exports = {  
   readSensorDefinitions,
-  readSensorDefinitionById,
-  readSensorValuesBySensorId,
-  readSensorValues,
-  readTopNSensorValues,
+  readSensorValues, 
+  readRelay,
 
-  readRelayDefinitions
+  updateRelay
 }

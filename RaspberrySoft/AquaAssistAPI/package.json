@@ -1,10 +1,22 @@
 {
-    "name": "AquaAssistAPI",
-    "version": "1.0.0.0",
-    "description": "The REST API for AquaAssist Client applications",
-    "dependencies": {
-        "fastify": "^1.13.0",
-        "pg": "^7.6.1",
-        "schema-object": "^4.0.11"
-    }
+  "name": "aquaassistapi",
+  "version": "1.0.0",
+  "description": "Aquarium Assistant Tool API",
+  "main": "server.js",
+  "dependencies": {
+    "fastify": "^1.13.0",
+    "pg": "^7.6.1",
+    "schema-object": "^4.0.11"
+  },
+  "devDependencies": {
+    "fastify": "^1.13.0",
+    "pg": "^7.6.1",
+    "schema-object": "^4.0.11"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "Roland Balog and Edina Balog",
+  "license": "ISC"
 }

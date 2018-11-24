@@ -1,88 +1,91 @@
 var db = require("./db/data_access.js");
 var response = require("./models/Response.js");
 
+var debug = true;
+
 // Require the framework and instantiate it
 const api = require('fastify')();
 
-// Get all Sensor definition
-api.get('/SensorDefinition', async (request, reply) => {      
-    console.log("Hello");
-    if (request.query.id != undefined){
-        db.readSensorDefinitionById(request.query.id, (res)=>{
-            console.log(res);      
-            reply
-            .code(200)
-            .header('Content-Type', 'application/json; charset=utf-8')
-            .send(res);        
-        });
+// Routes
+
+api.route({
+    method:'GET',
+    url:'/Sensor',        
+    beforeHandler:async(request, reply) => {
+        // TODO Check authentification
+    },
+    handler:async(request, reply) => GetSensor(request, reply)
+})
+
+api.route({
+    method:'GET',
+    url:'/Sensor/Values',        
+    beforeHandler:async(request, reply) => {
+        // TODO Check authentification
+    },
+    handler:async(request, reply) => GetSensorValues(request, reply)
+})
+
+api.route({
+    method:'GET',
+    url:'/Relay',        
+    beforeHandler:async(request, reply) => {
+        // TODO Check authentification
+    },
+    handler:async(request, reply) => GetRelay(request, reply)
+})
+
+api.route({
+    method:'PUT',
+    url:'/Relay',        
+    beforeHandler:async(request, reply) => {
+        // TODO Check authentification
+    },
+    handler:async(request, reply) => UpdateRelay(request, reply)
+})
+
+GetSensor = function(request, reply){
+    db.readSensorDefinitions(request.query, (err, res) => {        
+        DoReply(reply, err, res);
+    });
+}
+
+GetSensorValues = function(request, reply){
+    db.readSensorValues(request.query, (err, res) => {        
+        DoReply(reply, err, res);
+    });
+}
+
+GetRelay = function(request, reply){
+    db.readRelay(request.query, (err, res) => {        
+        DoReply(reply, err, res);
+    });
+}
+
+UpdateRelay = function(request, reply){
+    db.updateRelay(request.query, request.body, (err, res) => {        
+        DoReply(reply, err, res);
+    });
+}
+
+DoReply = function(reply, err, res){
+    if (err){
+        console.log('--------------------ERROR------------------------');
+        console.log('Send reply 400: ' + JSON.stringify(err, null, 2));
+        reply.code(400).header('Content-Type', 'application/json; charset=utf-8').send(err);    
     } else {
-        db.readSensorDefinitions((res) => {
-            console.log(res);                
-            reply
-                .code(200)
-                .header('Content-Type', 'application/json; charset=utf-8')
-                .send(res);        
-        });    
-    } 
-});
-
-api.get('/SensorValues', async (request, reply) => {      
-    if (request.query.id != undefined && 
-        request.query.start != undefined &&
-        request.query.end != undefined &&
-        request.query.max != undefined){
-
-        db.readSensorValues(request.query.id, request.query.start, request.query.end, request.query.max, (res)=>{
-            console.log(res);      
-            reply
-            .code(200)
-            .header('Content-Type', 'application/json; charset=utf-8')
-            .send(res);        
-        });
-    } 
-    else if (request.query.n != undefined &&
-            request.query.id){
-        db.readTopNSensorValues(request.query.id, request.query.n, (res)=>{
-            console.log(res);
-            reply
-            .code(200)
-            .header('Content-Type', 'application/json; charset=utf-8')
-            .send(res);
-        });
-    } 
-    else {
-        db.readSensorDefinitions((res) => {            
-            reply
-                .code(404)                
-                .send("Error");        
-        });    
-    } 
-});
-
-api.get('/Relay', async (request, reply) => {          
-    if (request.query.id != undefined){
-        db.readSensorDefinitionById(request.query.id, (res)=>{
-            console.log(res);      
-            reply
-            .code(200)
-            .header('Content-Type', 'application/json; charset=utf-8')
-            .send(res);        
-        });
-    } else {
-        db.readRelayDefinitions((res) => {
-            console.log(res);                
-            reply
-                .code(200)
-                .header('Content-Type', 'application/json; charset=utf-8')
-                .send(res);        
-        });    
-    } 
-});
+        if (debug){
+            console.log('---------------------200-------------------------');
+            console.log('Send reply 200: ' + JSON.stringify(res, null, 2));
+        }
+        reply.code(200).header('Content-Type', 'application/json; charset=utf-8').send(res);
+    }
+}
 
 // Run the server!
 const start = async () => {
   try {
-    await api.listen(3000)
+    await api.listen(8080)    
     api.log.info(`server listening on ${api.server.address().port}`)
   } catch (err) {
     api.log.error(err)

@@ -9,6 +9,18 @@ var RelayDefinition = new SchemaObject({
     LastStatusChange: Object
 });
 
+var IsValid = function(obj){
+    if (obj != undefined &&
+        obj.Id != undefined &&
+        obj.Name != undefined &&
+        obj.State != undefined &&
+        obj.DefaultState != undefined &&
+        obj.Description != undefined &&
+        obj.LastStatusChange != undefined)
+        return true;
+    return false;
+}
+
 var dbResultToRelayDefinitionArray = function(result){
     var resArray = [];    
     result.rows.forEach(element => {
@@ -31,5 +43,6 @@ var dbResultToRelayDefinition = function(element){
 module.exports = {
     RelayDefinition,
     dbResultToRelayDefinitionArray,
-    dbResultToRelayDefinition
+    dbResultToRelayDefinition,
+    IsValid
 };
