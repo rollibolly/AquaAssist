@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -20,8 +16,7 @@ namespace AquaAssist.Mobile.Pages
 
         private void ListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
         {
-            var item = e.SelectedItem as RootMasterDetailPageMenuItem;
-            if (item == null)
+            if (!(e.SelectedItem is Models.MenuItem item))
                 return;
 
             var page = (Page)Activator.CreateInstance(item.TargetType);
