@@ -14,18 +14,21 @@ const pool = new Pool({
 // Executes a query with parameters
 var RunQuery = function(queryText, queryParams, mappingFunc, callback){
   pool.query(queryText, queryParams, (err, res) => {
-    if (err)
+    if (err) {
+      console.log('Query Error');
       callback(err, null);
+    }
     else
     {
       try {
         if (mappingFunc != null) {
           var transformedData = mappingFunc(res);
           callback(null, transformedData);
-        } else {
+        } else {          
           callback(null, null)
         }
       } catch(ex) {
+        console.log('Transform Error');
         callback(ex, null);
       }      
     }      

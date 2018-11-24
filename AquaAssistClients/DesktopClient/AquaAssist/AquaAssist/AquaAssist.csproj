@@ -105,8 +105,14 @@
     <Compile Include="ViewModel\MonitorizationViewModel.cs" />
     <Compile Include="ViewModel\SensorViewModel.cs" />
     <Compile Include="ViewModel\SensorViewModelProperties.cs" />
+    <Compile Include="View\ControlView.xaml.cs">
+      <DependentUpon>ControlView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\MonitorizationView.xaml.cs">
       <DependentUpon>MonitorizationView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\RelayView.xaml.cs">
+      <DependentUpon>RelayView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\SensorView.xaml.cs">
       <DependentUpon>SensorView.xaml</DependentUpon>
@@ -131,7 +137,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="View\ControlView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\MonitorizationView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\RelayView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

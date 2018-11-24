@@ -107,5 +107,20 @@ namespace AquaAssist.Communication
                     { "n", N.ToString() }
                 });
         }
+
+        public static List<RelayModel> GetRelays()
+        {
+            return Get<List<RelayModel>>("Relay",
+                new Dictionary<string, string>());
+        }
+
+        public static List<RelayModel> GetRelayById(int id)
+        {
+            return Get<List<RelayModel>>("Relay",
+                new Dictionary<string, string>
+                {
+                    { "id", id.ToString() }                    
+                });
+        }
     }
 }

@@ -20,5 +20,7 @@ namespace AquaAssist.CrossCutting.Models
         public bool DefaultState { get; set; }
         [DataMember(Name = "Description")]
         public bool Description { get; set; }
+        [DataMember(Name = "LastStatusChange")]
+        public DateTime LastStatusChange { get; set; }
     }
 }

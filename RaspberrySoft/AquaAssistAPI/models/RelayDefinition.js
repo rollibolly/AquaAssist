@@ -10,6 +10,7 @@ var RelayDefinition = new SchemaObject({
 });
 
 var IsValid = function(obj){
+    console.log(obj);
     if (obj != undefined &&
         obj.Id != undefined &&
         obj.Name != undefined &&
