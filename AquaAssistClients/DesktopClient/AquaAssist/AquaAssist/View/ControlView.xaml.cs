@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AquaAssist.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +24,11 @@ namespace AquaAssist.View
         public ControlView()
         {
             InitializeComponent();
+        }
+
+        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            this.DataContext = new ControlViewModel();
         }
     }
 }

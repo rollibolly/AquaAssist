@@ -98,24 +98,32 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Converters\BoolToVisibilityConverter.cs" />
+    <Compile Include="Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
     <Compile Include="Utils\AccentColorMenuData.cs" />
     <Compile Include="Utils\CommandHandler.cs" />
     <Compile Include="Utils\Extensions.cs" />
+    <Compile Include="ViewModel\BaseViewModel.cs" />
+    <Compile Include="ViewModel\ControlViewModel.cs" />
     <Compile Include="ViewModel\MainWindowViewModel.cs" />
     <Compile Include="ViewModel\MonitorizationViewModel.cs" />
     <Compile Include="ViewModel\SensorViewModel.cs" />
     <Compile Include="ViewModel\SensorViewModelProperties.cs" />
+    <Compile Include="ViewModel\SwitchViewModel.cs" />
     <Compile Include="View\ControlView.xaml.cs">
       <DependentUpon>ControlView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\MonitorizationView.xaml.cs">
       <DependentUpon>MonitorizationView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\RelayView.xaml.cs">
-      <DependentUpon>RelayView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="View\SensorView.xaml.cs">
       <DependentUpon>SensorView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\SwitchView.xaml.cs">
+      <DependentUpon>SwitchView.xaml</DependentUpon>
     </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -145,11 +153,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\RelayView.xaml">
+    <Page Include="View\SensorView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\SensorView.xaml">
+    <Page Include="View\SwitchView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -174,6 +182,10 @@
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>

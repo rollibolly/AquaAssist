@@ -16,13 +16,18 @@ using System.Windows.Shapes;
 namespace AquaAssist.View
 {
     /// <summary>
-    /// Interaction logic for RelayView.xaml
+    /// Interaction logic for SwitchView.xaml
     /// </summary>
-    public partial class RelayView : UserControl
+    public partial class SwitchView : UserControl
     {
-        public RelayView()
+        public SwitchView()
         {
             InitializeComponent();
+        }
+
+        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            
         }
     }
 }

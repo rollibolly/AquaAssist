@@ -1,4 +1,5 @@
-﻿using AquaAssist.Utils;
+﻿using AquaAssist.Communication;
+using AquaAssist.Utils;
 using MahApps.Metro;
 using System;
 using System.Collections.Generic;
@@ -12,8 +13,17 @@ using System.Windows.Media;
 
 namespace AquaAssist.ViewModel
 {
-    public class MainWindowViewModel : INotifyPropertyChanged
-    {
+    public class MainWindowViewModel : BaseViewModel
+    {        
+        private ICommand updateSettingsCommand;
+        public ICommand UpdateSettingsCommand
+        {
+            get
+            {
+                return updateSettingsCommand ?? (updateSettingsCommand = new CommandHandler(() => UpdateSettings(), true));
+            }
+        }
+
         public List<AccentColorMenuData> AccentColors { get; set; }
         public List<AccentColorMenuData> AppThemes { get; set; }
 
@@ -54,9 +64,7 @@ namespace AquaAssist.ViewModel
             }
         }
 
-        private ICommand settingsCommand;
-
-        public event PropertyChangedEventHandler PropertyChanged;
+        private ICommand settingsCommand;        
 
         public ICommand SettingsCommand
         {
@@ -68,6 +76,8 @@ namespace AquaAssist.ViewModel
 
         public MainWindowViewModel()
         {
+            UpdateSettings();
+            
             this.AccentColors = ThemeManager.Accents.Select(x => new AccentColorMenuData { ColorBrush = x.Resources["AccentBaseColorBrush"] as Brush, Name = x.Name }).ToList();
             this.AppThemes = ThemeManager.AppThemes.Select(x => new AccentColorMenuData { Name = x.Name, BorderColorBrush = x.Resources["BlackColorBrush"] as Brush, ColorBrush = x.Resources["WhiteColorBrush"] as Brush }).ToList();
 
@@ -80,10 +90,11 @@ namespace AquaAssist.ViewModel
         {
             IsSettingFlyoutOpen = true;
         }
+        
 
-        private void OnPropertyChanged(string property)
+        private void UpdateSettings()
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(property));
+            RestClient.BaseUrl = Settings.Default.API_URL;
         }
     }
 }

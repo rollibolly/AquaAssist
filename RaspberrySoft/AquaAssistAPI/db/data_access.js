@@ -91,7 +91,7 @@ var readRelay = function(query, callback){
     RunQuery(
       'SELECT * FROM relays.relay_data WHERE id = $1', 
       [query.id], 
-      RelayDefinitionModel.dbResultToRelayDefinitionArray, 
+      RelayDefinitionModel.dbResultToRelayDefinitionSingle, 
       callback);  
   }
 }
@@ -103,7 +103,7 @@ var updateRelay = function(query, body, callback) {
     callback(new Error("Request body is not a valid Relay object."), null);
   } else {    
     readRelay(query, (err, res) => {      
-      if (res[0].State != body.State) {
+      if (res.State != body.State) {
         RunQuery(
           'UPDATE relays.relay_data SET name = $1, state = $2, default_state = $3, description = $4, last_status_change_ts = now() WHERE id = $5', 
           [body.Name, body.State, body.DefaultState, body.Description, query.id], 

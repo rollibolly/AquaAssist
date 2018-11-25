@@ -15,9 +15,8 @@ using System.Windows.Media;
 
 namespace AquaAssist.ViewModel
 {
-    public class SensorViewModelProperties: INotifyPropertyChanged
-    {
-        public event PropertyChangedEventHandler PropertyChanged;
+    public class SensorViewModelProperties: BaseViewModel
+    {        
         private double currentValue;
         private DateTime lastUpdateTs;
         private SensorModel sensor;
@@ -28,21 +27,9 @@ namespace AquaAssist.ViewModel
         private double width = Diomensions.SENSOR_VIEW_WIDTH;
         private double height = Diomensions.SENSOR_VIEW_HEIGHT;        
         private bool isMaximized = false;
-        private bool isLoading = false;
-        private bool isNetworkError = false;
-
+     
         private DateTime startDate = DateTime.Now.AddDays(-1);
-        private DateTime endDate = DateTime.Now;
-
-        public bool IsNetworkError
-        {
-            get { return isNetworkError; }
-            set
-            {
-                isNetworkError = value;
-                OnPropertyChanged(nameof(IsNetworkError));
-            }
-        }
+        private DateTime endDate = DateTime.Now;        
 
         public double CurrentValue
         {
@@ -79,9 +66,7 @@ namespace AquaAssist.ViewModel
                 sensor = value;
                 OnPropertyChanged(nameof(Sensor));
             }
-        }
-
-        public SensorTypes SensorType { get; set; }
+        }        
 
         public DateTime StartDate
         {
@@ -101,17 +86,7 @@ namespace AquaAssist.ViewModel
                 endDate = value;
                 OnPropertyChanged(nameof(EndDate));
             }
-        }
-
-        public bool IsLoading
-        {
-            get => isLoading;
-            set
-            {
-                isLoading = value;
-                OnPropertyChanged(nameof(IsLoading));
-            }
-        }
+        }        
 
         public bool IsMaximized
         {
@@ -227,11 +202,6 @@ namespace AquaAssist.ViewModel
         }
 
 
-        public SeriesCollection DisplaySeries { get; set; }
-
-        protected virtual void OnPropertyChanged(string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
+        public SeriesCollection DisplaySeries { get; set; }        
     }
 }

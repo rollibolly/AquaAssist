@@ -65,17 +65,17 @@ namespace AquaAssist.ViewModel
             initWorker.RunWorkerCompleted += InitWorker_RunWorkerCompleted;
 
             IsLoading = true;
-            initWorker.RunWorkerAsync(SensorType);
+            initWorker.RunWorkerAsync(Sensor.Id);
         }
 
         // Loads sensor definition from REST API
         private void InitWorker_DoWork(object sender, DoWorkEventArgs e)
         {
-            SensorTypes type = (SensorTypes)e.Argument;
+            int id = (int)e.Argument;
             SensorModel model = null;
             while (true)
             {
-                model = RestClient.GetSensorModel(type);
+                model = RestClient.GetSensorModelById(id);
                 if (model != null)
                     break;
                 IsNetworkError = true;
