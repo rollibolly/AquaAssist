@@ -4,11 +4,11 @@ var RelayDefinitionModel = require("./../models/RelayDefinition.js");
 const { Pool, Client } = require('pg')
 
 const pool = new Pool({
-  user: 'postgres',
-  host: '192.168.1.193',
-  database: 'AquaAssist',
-  password: 'varasfinis',
-  port: 5432,
+  user: global.gConfig.db_user,
+  host: global.gConfig.db_host,
+  database: global.gConfig.database,
+  password: global.gConfig.db_password,
+  port: global.gConfig.db_port,
 })
 
 // Executes a query with parameters

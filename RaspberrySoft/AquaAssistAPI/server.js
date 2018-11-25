@@ -1,7 +1,16 @@
+// environment variables
+//process.env.NODE_ENV = 'development';
+process.env.NODE_ENV = 'production';
+
+// config variables
+const config = require('./config.js');
+
+
 var db = require("./db/data_access.js");
 var bodyParser = require('body-parser')
 
 var jsonParser = bodyParser.json()
+
 
 DoReply = function(reply, err, res){    
     if (err){
@@ -42,21 +51,20 @@ UpdateRelay = function(request, reply){
 }
 
 var express = require('express'),
-  app = express(),
-  port = process.env.PORT || 3000;
+    app = express(),
+    port = global.gConfig.node_port;
 
-  app.route('/Sensor')
-  .get(GetSensor)
-  app.route('/Sensor/Values')
-  .get(GetSensorValues)
-  app.route('/Relay')
-  .get(GetRelay)
-  app.route('/Relay')
-  .put(jsonParser, UpdateRelay)
+    app.route('/Sensor')
+    .get(GetSensor)
+    app.route('/Sensor/Values')
+    .get(GetSensorValues)
+    app.route('/Relay')
+    .get(GetRelay)
+    app.route('/Relay')
+    .put(jsonParser, UpdateRelay)
 
-  app.use(bodyParser.json());
+    app.use(bodyParser.json());
   
 app.listen(port);
 
-console.log('todo list RESTful API server started on: ' + port);
-
+console.log(`${global.gConfig.app_name} listening on port ${global.gConfig.node_port}`);

@@ -1,0 +1,24 @@
+{
+    "development": {
+        "config_id": "development",
+        "app_name": "Aquarium Assistant API",
+        "app_desc": "REST API for Aquarium Assistant",
+        "node_port": 3000,        
+        "db_user": "postgres",
+        "db_host": "127.0.0.1",
+        "database": "AquaAssist",
+        "db_password": "varasfinis",
+        "db_port": 5432
+    },    
+    "testing": {
+        "config_id": "testing"        
+    },
+    "staging": {
+        "config_id": "staging"      
+    },
+    "production": {
+        "config_id": "production",
+        "user": "pi",            
+        "db_password": "admin"        
+    }
+}
