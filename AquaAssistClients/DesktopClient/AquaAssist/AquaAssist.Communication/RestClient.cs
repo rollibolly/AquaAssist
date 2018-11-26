@@ -13,7 +13,13 @@ namespace AquaAssist.Communication
 {
     public static class RestClient
     {
-        public static string BaseUrl { get; set; } = "http://192.168.1.129:3000/";        
+        public static string BaseUrl { get; set; } =  "";
+
+        private static void Serialize(Stream output, object input)
+        {
+            var ser = new DataContractJsonSerializer(input.GetType());
+            ser.WriteObject(output, input);
+        }
 
         /// <summary>
         /// Generic Get Function
@@ -50,6 +56,41 @@ namespace AquaAssist.Communication
                 return null;
             }
             return res;
+        }
+
+        private static T Put<T>(string root, int id, T payload) where T : class, new()
+        {
+            T res = new T();
+            try
+            {
+                string query = $"?id={id}";                
+
+                WebRequest request = WebRequest.Create($"{BaseUrl}{root}{query}");
+                request.Method = "PUT";
+                request.ContentType = "application/json";
+                if (payload != null)
+                {
+                    Stream dataStream = request.GetRequestStream();
+                    Serialize(dataStream, payload);
+
+                    //request.ContentLength = dataStream.Length;
+
+                    dataStream.Close();
+                }
+                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+
+                if (response.StatusCode == HttpStatusCode.OK)
+                {
+                    Stream dataStream = response.GetResponseStream();
+                    DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(T));
+                    res = serializer.ReadObject(dataStream) as T;
+                }
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+            return res;            
         }
 
         public static List<SensorModel> GetSensorModels()
@@ -106,6 +147,26 @@ namespace AquaAssist.Communication
                     { "id", sensorId.ToString() },                    
                     { "n", N.ToString() }
                 });
+        }
+
+        public static List<RelayModel> GetRelays()
+        {
+            return Get<List<RelayModel>>("Relay",
+                new Dictionary<string, string>());
+        }
+
+        public static List<RelayModel> GetRelayById(int id)
+        {
+            return Get<List<RelayModel>>("Relay",
+                new Dictionary<string, string>
+                {
+                    { "id", id.ToString() }                    
+                });
+        }
+
+        public static RelayModel UpdateRelay(RelayModel relay)
+        {
+            return Put("Relay", relay.Id, relay);
         }
     }
 }

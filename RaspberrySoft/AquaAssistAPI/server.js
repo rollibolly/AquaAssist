@@ -1,95 +1,70 @@
+// environment variables
+process.env.NODE_ENV = 'production';
+//process.env.NODE_ENV = 'production';
+
+// config variables
+const config = require('./config.js');
+
+
 var db = require("./db/data_access.js");
-var response = require("./models/Response.js");
+var bodyParser = require('body-parser')
 
-var debug = true;
+var jsonParser = bodyParser.json()
 
-// Require the framework and instantiate it
-const api = require('fastify')();
 
-// Routes
+DoReply = function(reply, err, res){    
+    if (err){
+        console.log('--------------------ERROR------------------------');
+        console.log(err);
+        reply.send(err);    
+    } else {        
+        reply.json(res);
+    }
+}
 
-api.route({
-    method:'GET',
-    url:'/Sensor',        
-    beforeHandler:async(request, reply) => {
-        // TODO Check authentification
-    },
-    handler:async(request, reply) => GetSensor(request, reply)
-})
-
-api.route({
-    method:'GET',
-    url:'/Sensor/Values',        
-    beforeHandler:async(request, reply) => {
-        // TODO Check authentification
-    },
-    handler:async(request, reply) => GetSensorValues(request, reply)
-})
-
-api.route({
-    method:'GET',
-    url:'/Relay',        
-    beforeHandler:async(request, reply) => {
-        // TODO Check authentification
-    },
-    handler:async(request, reply) => GetRelay(request, reply)
-})
-
-api.route({
-    method:'PUT',
-    url:'/Relay',        
-    beforeHandler:async(request, reply) => {
-        // TODO Check authentification
-    },
-    handler:async(request, reply) => UpdateRelay(request, reply)
-})
-
-GetSensor = function(request, reply){
+GetSensor = function(request, reply){    
+    console.log('GetSensor')
     db.readSensorDefinitions(request.query, (err, res) => {        
         DoReply(reply, err, res);
-    });
+    });    
 }
 
 GetSensorValues = function(request, reply){
+    console.log('GetSensorValues')
     db.readSensorValues(request.query, (err, res) => {        
         DoReply(reply, err, res);
     });
 }
 
 GetRelay = function(request, reply){
+    console.log('GetRelay')
     db.readRelay(request.query, (err, res) => {        
         DoReply(reply, err, res);
     });
 }
 
-UpdateRelay = function(request, reply){
+UpdateRelay = function(request, reply){   
+    console.log('UpdateRelay')
     db.updateRelay(request.query, request.body, (err, res) => {        
         DoReply(reply, err, res);
     });
 }
 
-DoReply = function(reply, err, res){
-    if (err){
-        console.log('--------------------ERROR------------------------');
-        console.log('Send reply 400: ' + JSON.stringify(err, null, 2));
-        reply.code(400).header('Content-Type', 'application/json; charset=utf-8').send(err);    
-    } else {
-        if (debug){
-            console.log('---------------------200-------------------------');
-            console.log('Send reply 200: ' + JSON.stringify(res, null, 2));
-        }
-        reply.code(200).header('Content-Type', 'application/json; charset=utf-8').send(res);
-    }
-}
+var express = require('express'),
+    app = express(),
+    port = global.gConfig.node_port;
 
-// Run the server!
-const start = async () => {
-  try {
-    await api.listen(8080)    
-    api.log.info(`server listening on ${api.server.address().port}`)
-  } catch (err) {
-    api.log.error(err)
-    process.exit(1)
-  }
-}
-start()
+    app.route('/Sensor')
+    .get(GetSensor)
+    app.route('/Sensor/Values')
+    .get(GetSensorValues)
+    app.route('/Relay')
+    .get(GetRelay)
+    app.route('/Relay')
+    .put(jsonParser, UpdateRelay)
+
+    app.use(bodyParser.json());
+  
+app.listen(port);
+
+console.log(`${global.gConfig.app_name} listening on port ${global.gConfig.node_port}`);

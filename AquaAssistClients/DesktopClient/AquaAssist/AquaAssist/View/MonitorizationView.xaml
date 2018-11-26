@@ -4,16 +4,55 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:AquaAssist.View"
+             xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+             xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+             xmlns:converters="clr-namespace:AquaAssist.Converters"
              mc:Ignorable="d" 
-             d:DesignHeight="1000" d:DesignWidth="1000">
+             d:DesignHeight="1000" d:DesignWidth="1000"
+             Loaded="UserControl_Loaded">
+    <UserControl.Resources>
+        <converters:BoolToVisibilityConverter x:Key="bool2Visibility"></converters:BoolToVisibilityConverter>
+    </UserControl.Resources>
     <Grid>
         <ScrollViewer>
-        <WrapPanel HorizontalAlignment="Center"> 
-                <local:SensorView DataContext="{Binding TemperatureSensor}"></local:SensorView>
-                <local:SensorView DataContext="{Binding OutsideTemperatureSensor}"></local:SensorView>
-                <local:SensorView DataContext="{Binding FlowRateSensor}"></local:SensorView>
-                <local:SensorView DataContext="{Binding LightSensor}"></local:SensorView>
-        </WrapPanel>
+            <ItemsControl 
+                Name="sensorsPanel"
+                ItemsSource="{Binding Path=Sensors, UpdateSourceTrigger=PropertyChanged}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel HorizontalAlignment="Center"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <local:SensorView />
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
         </ScrollViewer>
+        <Grid Name="loadingGrid" Visibility="{Binding IsLoading, Converter={StaticResource bool2Visibility}}">
+            <Border BorderThickness="0"
+                    Background="{DynamicResource WhiteBrush}" Opacity=".5"/>
+            <Controls:ProgressRing></Controls:ProgressRing>
+
+            <iconPacks:PackIconModern Kind="Disconnect" 
+                                      VerticalAlignment="Top"
+                                      HorizontalAlignment="Left"
+                                  Width="40"
+                                  Height="40"                                  
+                                  Margin="20, 20, 0, 0">
+                <iconPacks:PackIconModern.Style>
+                    <Style TargetType="{x:Type iconPacks:PackIconModern}">
+                        <Setter Property="Visibility" Value="Collapsed"></Setter>
+                        <Setter Property="Foreground" Value="{DynamicResource GrayBrush1}"></Setter>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsNetworkError}" Value="True">
+                                <Setter Property="Visibility" Value="Visible"></Setter>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </iconPacks:PackIconModern.Style>
+            </iconPacks:PackIconModern>
+        </Grid>
     </Grid>
 </UserControl>

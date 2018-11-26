@@ -4,28 +4,31 @@ var RelayDefinitionModel = require("./../models/RelayDefinition.js");
 const { Pool, Client } = require('pg')
 
 const pool = new Pool({
-  user: 'postgres',
-  host: '192.168.103',
-  database: 'AquaAssist',
-  password: 'varasfinis',
-  port: 5432,
+  user: global.gConfig.db_user,
+  host: global.gConfig.db_host,
+  database: global.gConfig.database,
+  password: global.gConfig.db_password,
+  port: global.gConfig.db_port,
 })
 
 // Executes a query with parameters
 var RunQuery = function(queryText, queryParams, mappingFunc, callback){
   pool.query(queryText, queryParams, (err, res) => {
-    if (err)
+    if (err) {
+      console.log('Query Error');
       callback(err, null);
+    }
     else
     {
       try {
         if (mappingFunc != null) {
           var transformedData = mappingFunc(res);
           callback(null, transformedData);
-        } else {
+        } else {          
           callback(null, null)
         }
       } catch(ex) {
+        console.log('Transform Error');
         callback(ex, null);
       }      
     }      
@@ -88,7 +91,7 @@ var readRelay = function(query, callback){
     RunQuery(
       'SELECT * FROM relays.relay_data WHERE id = $1', 
       [query.id], 
-      RelayDefinitionModel.dbResultToRelayDefinitionArray, 
+      RelayDefinitionModel.dbResultToRelayDefinitionSingle, 
       callback);  
   }
 }
@@ -100,7 +103,7 @@ var updateRelay = function(query, body, callback) {
     callback(new Error("Request body is not a valid Relay object."), null);
   } else {    
     readRelay(query, (err, res) => {      
-      if (res[0].State != body.State) {
+      if (res.State != body.State) {
         RunQuery(
           'UPDATE relays.relay_data SET name = $1, state = $2, default_state = $3, description = $4, last_status_change_ts = now() WHERE id = $5', 
           [body.Name, body.State, body.DefaultState, body.Description, query.id], 

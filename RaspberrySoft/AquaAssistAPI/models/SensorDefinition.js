@@ -22,6 +22,7 @@ var SensorDefinition = new SchemaObject({
 
 var dbResultToSensorDefinitionArray = function(result){
     var resArray = [];
+    console.log('Rows to array');
     result.rows.forEach(element => {
         resArray.push(new SensorDefinition({
             Id: element.id,

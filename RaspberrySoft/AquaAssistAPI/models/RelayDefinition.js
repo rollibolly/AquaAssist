@@ -10,6 +10,7 @@ var RelayDefinition = new SchemaObject({
 });
 
 var IsValid = function(obj){
+    console.log(obj);
     if (obj != undefined &&
         obj.Id != undefined &&
         obj.Name != undefined &&
@@ -40,9 +41,22 @@ var dbResultToRelayDefinition = function(element){
             });                    
 }
 
+var dbResultToRelayDefinitionSingle = function(element){  
+    console.log(element)    
+    return new RelayDefinition({
+                Id: element.rows[0].id,
+                Name: element.rows[0].name,                
+                State: element.rows[0].state,
+                DefaultState: element.rows[0].default_state,
+                Description: element.rows[0].description,
+                LastStatusChange: element.rows[0].last_status_change_ts
+            });                    
+}
+
 module.exports = {
     RelayDefinition,
     dbResultToRelayDefinitionArray,
     dbResultToRelayDefinition,
+    dbResultToRelayDefinitionSingle,
     IsValid
 };

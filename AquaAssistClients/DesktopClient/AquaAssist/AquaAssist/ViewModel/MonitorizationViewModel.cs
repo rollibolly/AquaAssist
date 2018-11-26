@@ -1,40 +1,65 @@
-﻿using AquaAssist.CrossCutting.Enum;
+﻿using AquaAssist.Communication;
+using AquaAssist.CrossCutting.Enum;
+using AquaAssist.CrossCutting.Models;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Threading;
 
 namespace AquaAssist.ViewModel
 {
-    public class MonitorizationViewModel
-    {
-        public SensorViewModel TemperatureSensor { get; set; }
-        public SensorViewModel OutsideTemperatureSensor { get; set; }
-        public SensorViewModel FlowRateSensor { get; set; }
-        public SensorViewModel LightSensor { get; set; }
+    public class MonitorizationViewModel:BaseViewModel
+    {        
+        public ObservableCollection<SensorViewModel> Sensors { get; set; }
+        
         
         public MonitorizationViewModel()
-        {            
-            TemperatureSensor = new SensorViewModel
-            {                
-                SensorType = SensorTypes.TemperatureAquarium,                
-                
-            };
-            TemperatureSensor.Initialize();
-
-            OutsideTemperatureSensor = new SensorViewModel
-            {
-                SensorType = SensorTypes.TemperatureOutside
-            };
-            OutsideTemperatureSensor.Initialize();
-
-            FlowRateSensor = new SensorViewModel
-            {
-                SensorType = SensorTypes.FlowRate
-            };
-            FlowRateSensor.Initialize();
-
-            LightSensor = new SensorViewModel
-            {
-                SensorType = SensorTypes.Light
-            };
-            LightSensor.Initialize();
+        {
+             Sensors = new ObservableCollection<SensorViewModel>();
+            LoadSensorDefinitions();
         }        
+
+        private void LoadSensorDefinitions()
+        {
+            BackgroundWorker loadSensorsWorker = new BackgroundWorker();
+            loadSensorsWorker.RunWorkerCompleted += LoadSensorsWorker_RunWorkerCompleted;
+            loadSensorsWorker.DoWork += LoadSensorsWorker_DoWork;
+
+            IsLoading = true;
+            loadSensorsWorker.RunWorkerAsync();
+        }
+
+        private void LoadSensorsWorker_DoWork(object sender, DoWorkEventArgs e)
+        {
+            List<SensorModel> result = null;
+            while (true)
+            {
+                result = RestClient.GetSensorModels();
+                if (result != null)
+                    break;
+                IsNetworkError = true;
+                Thread.Sleep(1000);
+            }
+            e.Result = result;
+        }
+
+        private void LoadSensorsWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            IsLoading = false;
+            List<SensorModel> models = e.Result as List<SensorModel>;
+            if (models != null)
+            {
+                foreach (SensorModel model in models)
+                {
+                    SensorViewModel viewModel = new SensorViewModel
+                    {
+                        Sensor = model
+                    };                    
+                    Sensors.Add(viewModel);
+                    OnPropertyChanged(nameof(Sensors));
+                    viewModel.Initialize();
+                }
+            }
+        }
     }
 }
