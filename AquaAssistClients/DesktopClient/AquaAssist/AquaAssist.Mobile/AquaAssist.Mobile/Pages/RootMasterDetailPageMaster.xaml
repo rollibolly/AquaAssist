@@ -9,29 +9,34 @@
               HasUnevenRows="true"
               ItemsSource="{Binding MenuItems}">
       <ListView.Header>
-        <Grid BackgroundColor="#03A9F4">
+        <Grid BackgroundColor="#cc0000">
           <Grid.ColumnDefinitions>
             <ColumnDefinition Width="10"/>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="10"/>
           </Grid.ColumnDefinitions>
-          <Grid.RowDefinitions>
-            <RowDefinition Height="30"/>
-            <RowDefinition Height="80"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="10"/>
-          </Grid.RowDefinitions>
-          <Label
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="10"/>
+                    </Grid.RowDefinitions>
+                    <Image Grid.Column="0"
+                           Grid.ColumnSpan="3"
+                           Grid.Row="0"
+                           Aspect="AspectFill"
+                           Source="BettaFish.PNG"/>
+                    <Label
               Grid.Column="1"
-              Grid.Row="2"
+              Grid.Row="1"
               Text="AquaAssist"
+              TextColor="Black"
               Style="{DynamicResource SubtitleStyle}"/>
         </Grid>
       </ListView.Header>
       <ListView.ItemTemplate>
         <DataTemplate>
             <ViewCell>
-                <Grid Padding="5,10">
+                <Grid Padding="10">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="30"/>
                         <ColumnDefinition Width="*" />
@@ -47,8 +52,9 @@
                     HorizontalOptions="Start"
                     VerticalOptions="FillAndExpand" 
                     VerticalTextAlignment="Center" 
+                    TextColor="Black"
                     Text="{Binding Title}" 
-                    FontSize="Medium"/>
+                    FontSize="Small"/>
                 </Grid>
           </ViewCell>
         </DataTemplate>

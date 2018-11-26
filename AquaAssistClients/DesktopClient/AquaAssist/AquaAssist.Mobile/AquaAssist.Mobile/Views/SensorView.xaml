@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AquaAssist.Mobile.Views.SensorView">
+  <ContentView.Content>
+      <StackLayout>
+            <Button
+                Text="{Binding ActualValue}"
+                FontSize="Large"
+                Opacity="0.6"
+                BorderColor="#b3b3b3"
+                BackgroundColor="#b3b3b3"
+                BorderRadius="180"
+                BorderWidth="2"
+                WidthRequest="100"
+                HeightRequest="100"
+                VerticalOptions="Center"
+                HorizontalOptions="Center">
+                <Button.Effects>
+                    
+                </Button.Effects>
+            </Button>
+            <Label 
+                Text="{Binding SensorModel.SensorName}" 
+                TextColor="Black" 
+                FontSize="Small"
+                HorizontalOptions="Center"/>
+        </StackLayout>
+  </ContentView.Content>
+</ContentView>

@@ -1,16 +1,20 @@
-﻿using AquaAssist.Communication;
-using AquaAssist.CrossCutting.Models;
-using System.Collections.Generic;
+﻿using AquaAssist.CrossCutting.Enum;
 
 namespace AquaAssist.Mobile.ViewModels
 {
     public class ActualValuesViewModel
     {
-        public List<SensorModel> SensorModels;
+        public SensorViewModel TempAquariumViewModel { get; set; }
+        public SensorViewModel TempOutsideViewModel { get; set; }
+        public SensorViewModel FlowRateViewModel { get; set; }
+        public SensorViewModel LightViewModel { get; set; }
 
         public ActualValuesViewModel()
         {
-            SensorModels = RestClient.GetSensorModels();
+            TempAquariumViewModel = new SensorViewModel() { SensorType = SensorTypes.TemperatureAquarium};
+            TempOutsideViewModel = new SensorViewModel() { SensorType = SensorTypes.TemperatureOutside };
+            FlowRateViewModel = new SensorViewModel() { SensorType = SensorTypes.FlowRate };
+            LightViewModel = new SensorViewModel() { SensorType = SensorTypes.Light };
         }
     }
 }

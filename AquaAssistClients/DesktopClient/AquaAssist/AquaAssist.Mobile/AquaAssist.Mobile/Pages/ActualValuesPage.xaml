@@ -1,10 +1,40 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:views="clr-namespace:AquaAssist.Mobile.Views"
              x:Class="AquaAssist.Mobile.Pages.ActualValuesPage">
     <ContentPage.Content>
-        <StackLayout>
-            
-        </StackLayout>
+        <ScrollView>
+            <Grid
+            Padding="20,40,20,20"
+            RowSpacing="40">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <views:SensorView 
+                Grid.Row="0"
+                Grid.Column="0"
+                BindingContext="{Binding TempAquariumViewModel}" />
+                <views:SensorView 
+                Grid.Row="0"
+                Grid.Column="1"
+                BindingContext="{Binding TempOutsideViewModel}" />
+                <views:SensorView 
+                Grid.Row="1"
+                Grid.Column="0"
+                BindingContext="{Binding FlowRateViewModel}" />
+                <views:SensorView 
+                Grid.Row="1"
+                Grid.Column="1"
+                BindingContext="{Binding LightViewModel}" />
+
+            </Grid>
+        </ScrollView>
     </ContentPage.Content>
 </ContentPage>
